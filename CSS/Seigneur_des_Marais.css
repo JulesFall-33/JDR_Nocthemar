@@ -278,18 +278,6 @@ td{color:var(--parchment-dim);}
 td:first-child{color:var(--parchment); font-weight:500;}
 tr:hover td{background:rgba(222,210,171,0.02);}
 
-/* ---------- PLACEHOLDER PAGE ---------- */
-.placeholder-hero{
-  display:flex; flex-direction:column; align-items:flex-start; gap:1em;
-  min-height:50vh; justify-content:center;
-}
-.placeholder-hero .picon{ font-size:3em; }
-.placeholder-box{
-  margin-top:1em; border:1px dashed var(--line-strong);
-  padding:2.2em; color:var(--parchment-faint); font-style:italic;
-  max-width:56ch;
-}
-
 footer{
   text-align:center; padding:3em; color:var(--parchment-faint); font-size:0.8em;
   font-family:"Cinzel"; letter-spacing:0.06em;
@@ -342,72 +330,167 @@ footer{
   .topbar .brand{font-size:0.9em;}
 }
 
-/* ---------- PERSONNAGES — GALERIE ---------- */
-.char-roster{
-  display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
-  gap:3.4em 1.8em; margin-top:3.4em;
+/* ---------- PERSONNAGES — FICHE DE PROFIL ---------- */
+.profile-grid{
+  display:grid; grid-template-columns:320px minmax(0,1fr); gap:3.2em;
+  align-items:start; margin-top:1em;
 }
-.char-card{
-  display:block; position:relative; overflow:visible;
-  padding:10px 10px 0;
-  border:1px solid var(--blood-dim);
-  background:linear-gradient(160deg, #1a1210, #0e0908);
-  box-shadow:inset 0 0 0 3px rgba(122,28,34,0.25);
-  transition:border-color .25s ease, box-shadow .25s ease;
+.profile-portrait-frame{
+  padding:10px; border:1px solid var(--line-strong);
+  background:linear-gradient(160deg, var(--ink-3), var(--ink-2));
+  position:sticky; top:6.5em;
 }
-.char-card:hover, .char-card:active{
-  border-color:var(--blood);
-  box-shadow:inset 0 0 0 3px rgba(122,28,34,0.4);
+.profile-portrait{
+  display:block; width:100%; height:auto;
+  border:1px solid var(--bronze-dim);
+  filter:saturate(0.92) contrast(1.04);
+  box-shadow:inset 0 0 50px rgba(0,0,0,0.35), 0 18px 40px rgba(0,0,0,0.4);
 }
-.char-card:hover .char-portrait, .char-card:active .char-portrait{
-  transform:scale(1.16) translateY(-3%);
-  filter:saturate(1) drop-shadow(0 22px 30px rgba(0,0,0,0.65));
+.portrait-swap{ position:relative; display:block; }
+.portrait-sketch{
+  position:absolute; inset:0; width:100%; height:100%;
+  opacity:0; transition:opacity .6s ease;
 }
-.frame-corner{
-  position:absolute; width:5px; height:5px; z-index:4; pointer-events:none;
-  border-radius:50%; background:var(--blood-dim); opacity:0.65;
-  transition:opacity .25s ease;
+.portrait-swap:hover .portrait-sketch, .portrait-swap:active .portrait-sketch{ opacity:1; }
+.profile-name{
+  font-family:"Cinzel Decorative", serif;
+  font-size:2.3em; line-height:1.1; margin-bottom:0.25em;
 }
-.char-card:hover .frame-corner, .char-card:active .frame-corner{ opacity:1; background:var(--blood); }
-.frame-corner.tl{ top:4px; left:4px; }
-.frame-corner.tr{ top:4px; right:4px; }
-.frame-corner.bl{ bottom:4px; left:4px; }
-.frame-corner.br{ bottom:4px; right:4px; }
-.char-portrait-wrap{ position:relative; overflow:visible; margin-bottom:10px; aspect-ratio:2/3; }
-.char-portrait{
-  display:block; position:relative; z-index:2;
+.profile-subtitle{
+  font-style:italic; color:var(--blood);
+  font-family:"Cinzel", serif; font-size:0.95em; letter-spacing:0.04em;
+  margin-bottom:1.6em;
+}
+.profile-badges{ display:flex; flex-wrap:wrap; gap:0.7em; min-width:0; }
+.pbadge{
+  font-family:"Cinzel", serif; font-size:0.68em; letter-spacing:0.06em;
+  padding:0.6em 1em; border:1px solid var(--line-strong); color:var(--parchment-dim);
+  display:inline-flex; align-items:center; gap:0.45em;
+  background:rgba(0,0,0,0.15); transition:border-color .15s ease, color .15s ease;
+}
+a.pbadge:hover{ border-color:currentColor; }
+.pbadge.primordiale{ border-color:var(--bronze-dim); color:var(--bronze); }
+.pbadge.veine{ border-color:var(--blood-dim); color:var(--blood); }
+.pbadge.divinite{ border-color:var(--verdigris-dim); color:var(--verdigris); }
+.epithets{
+  margin:2.2em 0; padding:1.5em 1.8em;
+  border-left:2px solid var(--blood-dim);
+  background:rgba(194,47,56,0.04);
+}
+.epithets p{
+  margin:0 0 0.45em 0; font-family:"Cinzel", serif; font-style:italic;
+  letter-spacing:0.02em; color:var(--bronze); font-size:1.05em;
+}
+.epithets p:last-child{ margin-bottom:0; }
+.epithets p.final{ color:var(--blood); font-style:normal; letter-spacing:0.04em; }
+.mtg-card.profile-card{ max-width:320px; position:sticky; top:6.5em; }
+@media (max-width:900px){
+  .profile-grid{ grid-template-columns:1fr; }
+  .profile-portrait-frame{ position:static; max-width:340px; margin:0 auto; }
+  .mtg-card.profile-card{ position:static; margin:0 auto; }
+}
+@media (max-width:600px){
+  .profile-name{ font-size:1.7em; }
+  .epithets{ padding:1.2em 1.3em; }
+}
+
+/* ---------- CARTES — HUB ---------- */
+:root{
+  --frost:#8fb8c9;
+  --frost-dim:#4c6b76;
+}
+
+/* ---------- PERSONNAGES — CARTES STYLE "MAGIC" ---------- */
+.mtg-roster{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+  gap:3.2em 2em; margin-top:3.4em;
+}
+.mtg-card{
+  --mtg-accent:var(--blood);
+  --mtg-accent-dim:var(--blood-dim);
+  display:block; position:relative;
+  aspect-ratio:5/7; max-width:300px;
+  border-radius:14px; padding:9px;
+  background:linear-gradient(160deg, var(--mtg-accent), #0c0908 45%, var(--mtg-accent-dim));
+  box-shadow:0 10px 26px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(0,0,0,0.5);
+}
+.mtg-inner{
+  display:flex; flex-direction:column; height:100%;
+  background:var(--ink-2); border-radius:8px; overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+.mtg-header{
+  display:flex; align-items:center; justify-content:space-between; gap:0.5em;
+  padding:0.5em 0.65em;
+  background:linear-gradient(180deg, var(--mtg-accent-dim), #1a1210);
+  border-bottom:1px solid rgba(0,0,0,0.6);
+}
+.mtg-name{
+  font-family:"Cinzel", serif; font-weight:700; font-size:0.95em;
+  letter-spacing:0.02em; color:var(--parchment);
+  text-shadow:0 1px 2px rgba(0,0,0,0.8);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.mtg-cost{
+  flex:none; display:inline-flex; align-items:center; justify-content:center;
+  width:1.5em; height:1.5em; border-radius:50%; font-size:0.85em;
+  background:radial-gradient(circle at 35% 30%, #2a211c, #0c0908 70%);
+  border:1px solid var(--mtg-accent);
+  box-shadow:0 0 6px rgba(0,0,0,0.5);
+}
+.mtg-art{
+  position:relative; flex:5 1 0; overflow:hidden;
+  border-bottom:1px solid rgba(0,0,0,0.6); background:#000;
+}
+.mtg-art-bg{
+  display:block; position:absolute; inset:0; z-index:1;
   width:100%; height:100%; object-fit:cover; object-position:50% 15%;
-  transform-origin:50% 100%;
-  filter:saturate(0.92) drop-shadow(0 0 0 rgba(0,0,0,0));
-  transition:transform .4s cubic-bezier(.22,.9,.28,1), filter .4s ease;
+  filter:blur(16px) saturate(1.2) brightness(0.5);
+  transform:scale(1.2);
 }
-.char-name{
-  position:relative; z-index:1;
-  margin:0 -10px; padding:0.9em 0.6em; text-align:center;
-  font-family:"Cinzel", serif; font-size:0.92em; letter-spacing:0.03em;
-  color:var(--parchment); border-top:1px solid var(--blood-dim);
+.mtg-art::after{
+  content:""; position:absolute; inset:0; z-index:2;
+  background:radial-gradient(ellipse at 50% 38%, transparent 30%, rgba(0,0,0,0.6) 100%);
+}
+.mtg-art-fg{
+  display:block; position:relative; z-index:3;
+  width:100%; height:100%; object-fit:contain; object-position:50% 50%;
+  filter:saturate(0.95);
+}
+.mtg-typeline{
+  display:flex; align-items:center; justify-content:space-between; gap:0.5em;
+  padding:0.32em 0.65em; font-family:"Cinzel", serif; font-size:0.66em;
+  letter-spacing:0.02em; color:var(--bronze);
+  background:linear-gradient(180deg, #1a1210, var(--mtg-accent-dim));
+  border-bottom:1px solid rgba(0,0,0,0.6);
+}
+.mtg-textbox{
+  position:relative; flex:4 1 0; min-height:0;
+  padding:0.6em 0.75em 1.5em;
+  background:linear-gradient(165deg, #17130f, #100d0b);
+  overflow:hidden;
+}
+.mtg-subtitle{
+  margin:0 0 0.45em; font-family:"Cinzel", serif; font-size:0.68em;
+  letter-spacing:0.03em; color:var(--parchment-dim); text-transform:uppercase;
+}
+.mtg-flavor{
+  margin:0; padding-top:0.5em; border-top:1px solid var(--line);
+  font-style:italic; font-size:0.76em; line-height:1.45; color:var(--parchment-dim);
+}
+.mtg-pt{
+  position:absolute; right:8px; bottom:8px; z-index:1;
+  padding:0.2em 0.6em; border-radius:6px;
+  background:radial-gradient(circle at 35% 30%, #2a211c, #0c0908 70%);
+  border:1px solid var(--mtg-accent);
+  font-family:"Cinzel", serif; font-size:0.64em; letter-spacing:0.04em;
+  color:var(--parchment); box-shadow:0 2px 6px rgba(0,0,0,0.5);
 }
 
-/* accent de couleur par personnage (par défaut : sang) */
-.char-card.dalek{ border-color:#8a7226; box-shadow:inset 0 0 0 3px rgba(95,138,74,0.22); }
-.char-card.dalek:hover, .char-card.dalek:active{ border-color:#c9a83a; box-shadow:inset 0 0 0 3px rgba(95,138,74,0.38); }
-.char-card.dalek .frame-corner.tl, .char-card.dalek .frame-corner.tr{ background:#8a7226; }
-.char-card.dalek .frame-corner.bl, .char-card.dalek .frame-corner.br{ background:#35492b; }
-.char-card.dalek:hover .frame-corner.tl, .char-card.dalek:hover .frame-corner.tr,
-.char-card.dalek:active .frame-corner.tl, .char-card.dalek:active .frame-corner.tr{ background:#c9a83a; }
-.char-card.dalek:hover .frame-corner.bl, .char-card.dalek:hover .frame-corner.br,
-.char-card.dalek:active .frame-corner.bl, .char-card.dalek:active .frame-corner.br{ background:#5f8a4a; }
-.char-card.dalek .char-name{ border-top-color:#35492b; }
-.char-card.dalek .char-portrait{ object-position:50% 8%; }
+.mtg-card.kaeliss{ --mtg-accent:var(--blood); --mtg-accent-dim:var(--blood-dim); }
+.mtg-card.dalek{ --mtg-accent:#5f8a4a; --mtg-accent-dim:#243a1c; }
+.mtg-card.marais{ --mtg-accent:#3d6b7a; --mtg-accent-dim:#1c333d; }
 
-.char-card.marais{ border-color:#335a66; box-shadow:inset 0 0 0 3px rgba(61,107,122,0.22); }
-.char-card.marais:hover, .char-card.marais:active{ border-color:#3d6b7a; box-shadow:inset 0 0 0 3px rgba(61,107,122,0.38); }
-.char-card.marais .frame-corner.tl, .char-card.marais .frame-corner.tr{ background:#335a66; }
-.char-card.marais .frame-corner.bl, .char-card.marais .frame-corner.br{ background:#1c333d; }
-.char-card.marais:hover .frame-corner.tl, .char-card.marais:hover .frame-corner.tr,
-.char-card.marais:active .frame-corner.tl, .char-card.marais:active .frame-corner.tr{ background:#3d6b7a; }
-.char-card.marais:hover .frame-corner.bl, .char-card.marais:hover .frame-corner.br,
-.char-card.marais:active .frame-corner.bl, .char-card.marais:active .frame-corner.br{ background:#1c333d; }
-.char-card.marais .char-name{ border-top-color:#1c333d; }
-
-
+@media (max-width:520px){
+  .mtg-roster{ grid-template-columns:1fr 1fr; gap:1.6em 1em; }
+}

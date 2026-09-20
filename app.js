@@ -116,6 +116,7 @@
     {name:"Chaîne", path:"Rang%20des%20Pouvoirs/Chaine.html", tag:"Rang de Veine"},
     {name:"Dalek", path:"Personnages/Dalek.html", tag:"Personnage"},
     {name:"Kaéliss", path:"Personnages/Kaeliss.html", tag:"Personnage"},
+    {name:"Seigneur des Marais", path:"Personnages/Seigneur_des_Marais.html", tag:"Personnage"},
     {name:"Monde", path:"Monde/Monde.html", tag:"Monde"}
   ];
 
