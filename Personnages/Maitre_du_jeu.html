@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maître du Jeu — Nocthémar</title>
+<link rel="icon" type="image/png" href="../img/Logo/Nocthemar_logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../CSS/Maitre_du_jeu.css">
+<link rel="stylesheet" href="../CSS/search.css">
+</head>
+<body>
+<canvas id="embers"></canvas>
+<div class="orb orb-white"></div>
+<div class="orb orb-white-2"></div>
+<div class="orb orb-red"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">Nocthémar</a>
+  <span class="brand-sub">Codex de l'univers JDR</span>
+  <span class="crumb">/ <a href="../categories/Personnages.html" style="color:inherit;">Personnages</a> / <span class="cur">Maître du Jeu</span></span>
+  <div class="search-wrap">
+    <button class="nav-search" id="searchToggle" aria-label="Rechercher">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <div class="search-panel" id="searchPanel">
+      <input type="text" id="searchInput" placeholder="Rechercher dans le Codex…" autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </div>
+  <a class="back" href="../categories/Personnages.html">← Personnages</a>
+</header>
+
+<main>
+
+  <section>
+    <div class="kicker"><span class="num">🎲</span>Hors-fiction</div>
+
+    <div class="profile-grid">
+      <div class="card-art-frame">
+        <div class="card-tilt">
+          <div class="card-flip">
+            <div class="card-face card-face-front">
+              <img class="card-art" src="../img/Cartes/Maitre%20du%20jeux.png" alt="Carte du Maître du Jeu">
+            </div>
+            <div class="card-face card-face-back">
+              <img class="card-art" src="../img/Cartes/Verso-Carte.png" alt="Dos de la carte">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="profile-name">Maître du Jeu</h2>
+        <p class="profile-subtitle">Narrateur et arbitre de Nocthémar</p>
+
+        <p style="margin-top:1.8em;">Contrairement aux autres fiches de cette section, celle-ci ne raconte pas un personnage de la fiction. Le Maître du Jeu, c'est celui qui anime Nocthémar autour de la table : il interprète les personnages non-joueurs, décrit le monde, arbitre les règles et guide les histoires racontées par le groupe.</p>
+
+        <p>Un clin d'œil mérité à celui sans qui aucune de ces aventures n'existerait.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>Codex du Monde — document de travail</footer>
+</main>
+
+<script src="../app.js"></script>
+</body>
+</html>

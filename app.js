@@ -2,8 +2,27 @@
 (function(){
   const canvas = document.getElementById('embers');
   if(!canvas) return;
+
+  // Animation désactivée si l'utilisateur préfère moins de mouvement.
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
   const ctx = canvas.getContext('2d');
   let w, h, dpr;
+
+  const COLORS = ['200,60,50', '224,90,40', '160,40,40'];
+  const SPRITE_SIZE = 64; // taille fixe des sprites pré-rendus (évite createRadialGradient à chaque frame)
+  const sprites = COLORS.map(color => {
+    const s = document.createElement('canvas');
+    s.width = SPRITE_SIZE; s.height = SPRITE_SIZE;
+    const sctx = s.getContext('2d');
+    const grad = sctx.createRadialGradient(SPRITE_SIZE/2, SPRITE_SIZE/2, 0, SPRITE_SIZE/2, SPRITE_SIZE/2, SPRITE_SIZE/2);
+    grad.addColorStop(0, `rgba(${color},1)`);
+    grad.addColorStop(1, `rgba(${color},0)`);
+    sctx.fillStyle = grad;
+    sctx.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+    return s;
+  });
+
   function resize(){
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     w = window.innerWidth; h = window.innerHeight;
@@ -11,11 +30,14 @@
     canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
   }
-  window.addEventListener('resize', resize);
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 150);
+  });
   resize();
 
-  const COLORS = ['200,60,50', '224,90,40', '160,40,40'];
-  const COUNT = window.innerWidth < 700 ? 12 : 22;
+  const COUNT = window.innerWidth < 700 ? 10 : 18;
   const particles = [];
 
   function spawn(p){
@@ -28,7 +50,7 @@
     p.wobbleSpeed = 0.01 + Math.random() * 0.02;
     p.life = 0;
     p.maxLife = h / p.speed * (0.85 + Math.random() * 0.3);
-    p.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    p.spriteIndex = Math.floor(Math.random() * sprites.length);
     p.baseAlpha = 0.16 + Math.random() * 0.22;
   }
 
@@ -40,7 +62,14 @@
     particles.push(p);
   }
 
+  let running = true;
+  document.addEventListener('visibilitychange', () => {
+    running = !document.hidden;
+    if(running) requestAnimationFrame(draw);
+  });
+
   function draw(){
+    if(!running) return;
     ctx.clearRect(0,0,w,h);
     for(const p of particles){
       p.life += 1;
@@ -58,19 +87,17 @@
         continue;
       }
 
-      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
-      grad.addColorStop(0, `rgba(${p.color},${alpha})`);
-      grad.addColorStop(1, `rgba(${p.color},0)`);
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
-      ctx.fill();
+      const glowSize = p.r * 10;
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(sprites[p.spriteIndex], p.x - glowSize/2, p.y - glowSize/2, glowSize, glowSize);
 
-      ctx.fillStyle = `rgba(255,220,190,${alpha})`;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = 'rgb(255,220,190)';
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r * 0.5, 0, Math.PI * 2);
       ctx.fill();
     }
+    ctx.globalAlpha = 1;
     requestAnimationFrame(draw);
   }
   draw();
@@ -114,6 +141,7 @@
     {name:"Esprit", path:"Rang%20des%20Pouvoirs/Esprit.html", tag:"Rang de Veine"},
     {name:"Ombre", path:"Rang%20des%20Pouvoirs/Ombre.html", tag:"Rang de Veine"},
     {name:"Chaîne", path:"Rang%20des%20Pouvoirs/Chaine.html", tag:"Rang de Veine"},
+    {name:"Maître du Jeu", path:"Personnages/Maitre_du_jeu.html", tag:"Personnage"},
     {name:"Dalek", path:"Personnages/Dalek.html", tag:"Personnage"},
     {name:"Kaéliss", path:"Personnages/Kaeliss.html", tag:"Personnage"},
     {name:"Seigneur des Marais", path:"Personnages/Seigneur_des_Marais.html", tag:"Personnage"},

@@ -410,4 +410,14 @@ footer{
 .char-card.marais:active .frame-corner.bl, .char-card.marais:active .frame-corner.br{ background:#1c333d; }
 .char-card.marais .char-name{ border-top-color:#1c333d; }
 
+.char-card.mj{ border-color:#6b6a63; box-shadow:inset 0 0 0 3px rgba(107,106,99,0.22); }
+.char-card.mj:hover, .char-card.mj:active{ border-color:#a39c8a; box-shadow:inset 0 0 0 3px rgba(107,106,99,0.38); }
+.char-card.mj .frame-corner.tl, .char-card.mj .frame-corner.tr,
+.char-card.mj .frame-corner.bl, .char-card.mj .frame-corner.br{ background:#6b6a63; }
+.char-card.mj:hover .frame-corner.tl, .char-card.mj:hover .frame-corner.tr,
+.char-card.mj:active .frame-corner.tl, .char-card.mj:active .frame-corner.tr,
+.char-card.mj:hover .frame-corner.bl, .char-card.mj:hover .frame-corner.br,
+.char-card.mj:active .frame-corner.bl, .char-card.mj:active .frame-corner.br{ background:#a39c8a; }
+.char-card.mj .char-name{ border-top-color:#4a4942; }
+
 

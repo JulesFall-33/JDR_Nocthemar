@@ -346,8 +346,17 @@ footer{
   background:linear-gradient(160deg, var(--ink-3), var(--ink-2));
   border-left:3px solid var(--accent, var(--line-strong));
   border-bottom:1px solid var(--line);
+  scroll-margin-top:6.5em;
+  transition:background .6s ease;
 }
 .pays-list .pays-card:last-child{ border-bottom:none; }
+.pays-card:target{
+  animation:pays-target-glow 2.2s ease;
+}
+@keyframes pays-target-glow{
+  0%{ background:linear-gradient(160deg, rgba(194,47,56,0.16), var(--ink-2)); }
+  100%{ background:linear-gradient(160deg, var(--ink-3), var(--ink-2)); }
+}
 .pays-num{
   position:absolute; top:1.8em; right:2em;
   font-family:"Cinzel"; font-size:0.75em; letter-spacing:0.1em; color:var(--parchment-faint);
