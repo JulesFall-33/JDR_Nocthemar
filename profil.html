@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil — Nocthémar</title>
+  <link rel="icon" type="image/png" href="img/Logo/Nocthemar_logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/index.css">
+  <link rel="stylesheet" href="CSS/search.css">
+  <link rel="stylesheet" href="CSS/compte.css">
+</head>
+<body class="page-profil">
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Nocthémar</a>
+    <span class="brand-sub">Codex de l'univers JDR</span>
+    <nav class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#categories">Le Codex</a>
+      <a href="index.html#apropos">À propos</a>
+    </nav>
+    <div class="search-wrap">
+      <button class="nav-search" id="searchToggle" aria-label="Rechercher">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <div class="search-panel" id="searchPanel">
+        <input type="text" id="searchInput" placeholder="Rechercher dans le Codex…" autocomplete="off">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+    <div id="discord-auth"></div>
+  </header>
+
+  <main class="profil-wrap">
+
+    <p id="chargement" class="vide">Chargement du profil…</p>
+
+    <!-- Pas connecté -->
+    <section id="non-connecte" class="carte centre" hidden>
+      <h2>Ton profil de joueur</h2>
+      <p>Connecte-toi avec Discord pour voir ta fiche, tes pièces et ton inventaire.</p>
+      <button id="btn-connexion" type="button" class="btn-discord">
+        <span class="btn-discord__logo" aria-hidden="true"></span>
+        Connecter Discord
+      </button>
+    </section>
+
+    <!-- Profil -->
+    <div id="profil" hidden>
+
+      <section class="entete">
+        <div id="banniere" class="entete__banniere"></div>
+        <div class="entete__infos">
+          <img id="avatar" class="entete__avatar" alt="">
+          <div>
+            <h1 id="pseudo"></h1>
+            <p id="titre" class="entete__titre"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="carte">
+        <h2>Personnage actif</h2>
+        <div id="perso"></div>
+      </section>
+
+      <!-- Visible uniquement sur son propre profil -->
+      <div id="prive" hidden>
+
+        <section class="carte solde">
+          <h2>Bourse</h2>
+          <p><span id="solde">0</span> <span class="solde__unite">pièces</span></p>
+        </section>
+
+        <div class="grille">
+          <section class="carte">
+            <h2>Inventaire</h2>
+            <ul id="inventaire" class="liste"></ul>
+          </section>
+
+          <section class="carte">
+            <h2>Historique</h2>
+            <ul id="historique" class="liste"></ul>
+          </section>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="JS/search.js"></script>
+  <script type="module" src="JS/auth.js"></script>
+  <script type="module" src="JS/profil.js"></script>
+</body>
+</html>
