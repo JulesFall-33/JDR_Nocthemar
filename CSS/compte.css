@@ -79,6 +79,23 @@
   object-fit: cover;
 }
 
+/* Lien "Panneau MJ", visible seulement pour les joueurs avec is_mj = true */
+.lien-mj {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border: 1px solid var(--accent);
+  border-radius: var(--rayon);
+  color: var(--accent);
+  font-family: "Cinzel", serif;
+  font-size: .7rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.lien-mj:hover { background: var(--accent); color: var(--fond); }
+
 .btn-deco {
   width: 32px;
   height: 32px;

@@ -33,6 +33,7 @@ async function afficher() {
       <img class="auth-user__avatar" alt="">
       <span class="auth-user__nom"></span>
     </a>
+    ${joueur.is_mj ? `<a class="lien-mj" href="${new URL('mj.html', SITE_ROOT)}">Panneau MJ</a>` : ''}
     <button type="button" class="btn-deco" title="Se déconnecter" aria-label="Se déconnecter">⏻</button>`;
 
   // textContent plutôt que innerHTML : un pseudo ne peut pas injecter de code
