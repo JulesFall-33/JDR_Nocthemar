@@ -15,6 +15,20 @@
   --rayon: 0;              /* le site n'utilise que des arêtes vives (pas de coins arrondis, hors icônes rondes) */
 }
 
+/* ---------- Lien Boutique (nav) ---------- */
+/* Reprend la typo de .nav-links a (CSS/index.css) pour s'intégrer à la
+   topbar sur toutes les pages, y compris celles qui n'ont pas de nav-links
+   (elles utilisent un fil d'Ariane "crumb" à la place). */
+.nav-boutique {
+  font-family: "Cinzel", serif;
+  font-size: 0.78em;
+  letter-spacing: 0.1em;
+  color: var(--texte-doux);
+  white-space: nowrap;
+  transition: color .2s ease;
+}
+.nav-boutique:hover { color: var(--accent); }
+
 /* ---------- Bouton de connexion (nav) ---------- */
 #discord-auth {
   display: flex;

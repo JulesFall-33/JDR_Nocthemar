@@ -1,0 +1,165 @@
+/* =====================================================================
+   Page boutique — utilise les variables de CSS/compte.css
+   (à charger APRÈS compte.css)
+   ===================================================================== */
+
+.page-boutique .boutique-entete {
+  text-align: center;
+  margin: 8px 0 4px;
+}
+.page-boutique .boutique-entete h1 {
+  margin: 0 0 8px;
+  color: var(--accent);
+}
+.page-boutique .boutique-entete p {
+  margin: 0 auto;
+  max-width: 560px;
+  color: var(--texte-doux);
+  font-style: italic;
+}
+
+/* Bandeau solde / connexion */
+.page-boutique .bourse {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.page-boutique .bourse strong { font-size: 1.6rem; }
+.page-boutique .bourse small  { font-size: .9rem; color: var(--texte-doux); font-weight: 400; }
+
+/* Titres de section */
+.page-boutique .boutique-titre {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.page-boutique .boutique-titre h2 { margin-bottom: 0; }
+.page-boutique .rebours { color: var(--texte-doux); font-size: .9rem; }
+.page-boutique .boutique-intro {
+  margin: 6px 0 18px;
+  color: var(--texte-doux);
+  font-size: .95rem;
+}
+
+/* Grille d'articles */
+.page-boutique .etal {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.page-boutique .article {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  background: var(--fond);
+  transition: border-color .15s;
+}
+.page-boutique .article:hover { border-color: var(--accent); }
+.page-boutique .article--epuise { opacity: .5; }
+
+.page-boutique .article__type {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--texte-doux);
+}
+.page-boutique .article__nom {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.page-boutique .article__desc {
+  margin: 0;
+  flex: 1;                 /* pousse le prix et le bouton en bas */
+  font-size: .9rem;
+  font-style: italic;
+  color: var(--texte-doux);
+}
+.page-boutique .article__pied {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 6px;
+}
+.page-boutique .article__prix {
+  font-weight: 700;
+  color: var(--accent);
+}
+.page-boutique .article__prix small { font-weight: 400; color: var(--texte-doux); }
+.page-boutique .article__stock { font-size: .8rem; color: var(--texte-doux); }
+
+/* Bouton d'achat */
+.page-boutique .btn-acheter {
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid var(--accent);
+  border-radius: var(--rayon);
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.page-boutique .btn-acheter:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--fond);
+}
+.page-boutique .btn-acheter:disabled {
+  border-color: var(--bord);
+  color: var(--texte-doux);
+  cursor: not-allowed;
+}
+
+/* Aperçus de la boutique fun */
+.page-boutique .apercu {
+  height: 70px;
+  margin: -14px -14px 6px;
+  border-bottom: 1px solid var(--bord);
+  border-radius: var(--rayon) var(--rayon) 0 0;
+  overflow: hidden;
+}
+.page-boutique .apercu img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.page-boutique .apercu--theme {
+  background: linear-gradient(135deg, var(--c), var(--fond));
+}
+.page-boutique .apercu--titre {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-style: italic;
+  background: var(--carte);
+}
+
+/* Notification après achat */
+.notif {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 20px);
+  max-width: calc(100% - 32px);
+  padding: 12px 18px;
+  border-radius: var(--rayon);
+  background: var(--carte);
+  border: 1px solid var(--bord);
+  color: var(--texte);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  z-index: 100;
+}
+.notif--visible { opacity: 1; transform: translate(-50%, 0); }
+.notif--ok     { border-color: var(--gain); }
+.notif--erreur { border-color: var(--perte); }

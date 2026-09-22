@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil — Nocthémar</title>
+  <title>Boutique — Nocthémar</title>
   <link rel="icon" type="image/png" href="img/Logo/Nocthemar_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,8 +11,9 @@
   <link rel="stylesheet" href="CSS/index.css">
   <link rel="stylesheet" href="CSS/search.css">
   <link rel="stylesheet" href="CSS/compte.css">
+  <link rel="stylesheet" href="CSS/boutique.css">
 </head>
-<body class="page-profil">
+<body class="page-profil page-boutique">
 
   <header class="topbar">
     <a class="brand" href="index.html">Nocthémar</a>
@@ -37,63 +38,49 @@
 
   <main class="profil-wrap">
 
-    <p id="chargement" class="vide">Chargement du profil…</p>
+    <header class="boutique-entete">
+      <h1>Le Marché de Nocthémar</h1>
+      <p>Tout ce qui se vend ici est cosmétique ou narratif. Les pièces se gagnent en jouant, jamais en payant.</p>
+    </header>
 
-    <!-- Pas connecté -->
-    <section id="non-connecte" class="carte centre" hidden>
-      <h2>Ton profil de joueur</h2>
-      <p>Connecte-toi avec Discord pour voir ta fiche, tes pièces et ton inventaire.</p>
+    <!-- Solde (connecté) -->
+    <section id="bourse" class="carte bourse" hidden>
+      <span>Ta bourse</span>
+      <strong><span id="solde">0</span> <small>pièces</small></strong>
+    </section>
+
+    <!-- Invitation à se connecter -->
+    <section id="invite" class="carte bourse" hidden>
+      <span>Connecte-toi pour acheter avec tes pièces.</span>
       <button id="btn-connexion" type="button" class="btn-discord">
         <span class="btn-discord__logo" aria-hidden="true"></span>
         Connecter Discord
       </button>
     </section>
 
-    <!-- Profil -->
-    <div id="profil" hidden>
-
-      <section class="entete">
-        <div id="banniere" class="entete__banniere"></div>
-        <div class="entete__infos">
-          <img id="avatar" class="entete__avatar" alt="">
-          <div>
-            <h1 id="pseudo"></h1>
-            <p id="titre" class="entete__titre"></p>
-          </div>
-        </div>
-      </section>
-
-      <section class="carte">
-        <h2>Personnage actif</h2>
-        <div id="perso"></div>
-      </section>
-
-      <!-- Visible uniquement sur son propre profil -->
-      <div id="prive" hidden>
-
-        <section class="carte solde">
-          <h2>Bourse</h2>
-          <p><span id="solde">0</span> <span class="solde__unite">pièces</span></p>
-        </section>
-
-        <div class="grille">
-          <section class="carte">
-            <h2>Inventaire</h2>
-            <ul id="inventaire" class="liste"></ul>
-          </section>
-
-          <section class="carte">
-            <h2>Historique</h2>
-            <ul id="historique" class="liste"></ul>
-          </section>
-        </div>
-
+    <section class="carte">
+      <div class="boutique-titre">
+        <h2>Boutique du jour</h2>
+        <span id="rebours" class="rebours"></span>
       </div>
-    </div>
+      <p class="boutique-intro">Le marchand ambulant change d'étal chaque jour. Stock limité : premier arrivé, premier servi.</p>
+      <div id="jour" class="etal"><p class="vide">Chargement…</p></div>
+    </section>
+
+    <section class="carte">
+      <div class="boutique-titre">
+        <h2>Boutique du profil</h2>
+      </div>
+      <p class="boutique-intro">Bannières, titres et thèmes pour personnaliser ton profil. Une fois acheté, équipe-le depuis ton profil.</p>
+      <div id="fun" class="etal"><p class="vide">Chargement…</p></div>
+    </section>
+
   </main>
+
+  <div id="notif" class="notif" role="status" aria-live="polite"></div>
 
   <script src="JS/search.js"></script>
   <script type="module" src="JS/auth.js"></script>
-  <script type="module" src="JS/profil.js"></script>
+  <script type="module" src="JS/boutique.js"></script>
 </body>
 </html>
