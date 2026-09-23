@@ -5,7 +5,7 @@
 //  Les achats passent par les fonctions SQL buy_daily_item / buy_fun_item :
 //  le solde et le stock sont vérifiés côté serveur, impossible de tricher.
 // =====================================================================
-import { supabase, connexionDiscord, getMonJoueur, SITE_ROOT } from './supabase.js';
+import { supabase, getMonJoueur, SITE_ROOT } from './supabase.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -29,9 +29,6 @@ async function init() {
   if (moi) {
     $('bourse').hidden = false;
     await Promise.all([chargerSolde(), chargerPossedes()]);
-  } else {
-    $('invite').hidden = false;
-    $('btn-connexion').addEventListener('click', connexionDiscord);
   }
 
   await Promise.all([afficherBoutiqueDuJour(), afficherBoutiqueFun()]);

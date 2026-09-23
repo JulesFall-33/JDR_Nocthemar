@@ -345,6 +345,11 @@
 }
 .objet__qte { color: var(--texte-doux); }
 
+.transac { animation: transac-entree .35s ease both; }
+@keyframes transac-entree {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 .transac small { display: block; color: var(--texte-doux); }
 .gain  { color: var(--gain); }
 .perte { color: var(--perte); }

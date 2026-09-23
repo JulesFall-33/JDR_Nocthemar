@@ -279,7 +279,7 @@ async function afficherHistorique(discordId) {
     .select('*')
     .eq('discord_id', discordId)
     .order('created_at', { ascending: false })
-    .limit(15);
+    .limit(3);
 
   const zone = $('historique');
 
