@@ -239,16 +239,19 @@ async function afficherSolde(discordId) {
 
 
 async function afficherInventaire(discordId, joueur) {
-  const { data: objets } = await supabase
+  const { data } = await supabase
     .from('inventory')
     .select('quantity, item:items(*)')
     .eq('discord_id', discordId)
     .order('acquired_at', { ascending: false });
 
+  // Les objets "rp" vivent déjà dans l'inventaire du personnage géré par le bot
+  const objets = (data ?? []).filter(({ item }) => item.kind !== 'rp');
+
   const zone = $('inventaire');
 
-  if (!objets?.length) {
-    zone.innerHTML = `<p class="vide">Ton inventaire est vide.</p>`;
+  if (!objets.length) {
+    zone.innerHTML = `<p class="vide">Aucun cosmétique pour l'instant.</p>`;
     return;
   }
 
