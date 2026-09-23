@@ -1,7 +1,8 @@
 // =====================================================================
 //  Page boutique
-//  - Boutique du jour : sélection qui change chaque jour, stock limité
-//  - Boutique fun     : cosmétiques de profil, un exemplaire par joueur
+//  - Boutique en rotation : sélection qui change toutes les X heures
+//    (get_boutique() calcule la fenêtre en cours côté serveur), stock limité
+//  - Boutique fun          : cosmétiques de profil, un exemplaire par joueur
 //  Les achats passent par les fonctions SQL buy_daily_item / buy_fun_item :
 //  le solde et le stock sont vérifiés côté serveur, impossible de tricher.
 // =====================================================================
@@ -15,12 +16,10 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => (
 
 const LIBELLES = { banner: 'Bannière', title: 'Titre', theme: 'Thème', rp: 'Objet', wallpaper: 'Fond', access: 'Accès', other: 'Divers' };
 
-// Date du jour à l'heure de Paris, au format AAAA-MM-JJ (comme dans la base)
-const aujourdhui = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' });
-
 let moi = null;          // ligne "players" du joueur connecté (ou null)
 let solde = 0;
 let possedes = new Set(); // ids des objets déjà possédés
+let finRotation = null;   // Date de fin de la rotation en cours (depuis get_boutique)
 
 
 async function init() {
@@ -31,7 +30,7 @@ async function init() {
     await Promise.all([chargerSolde(), chargerPossedes()]);
   }
 
-  await Promise.all([afficherBoutiqueDuJour(), afficherBoutiqueFun()]);
+  await Promise.all([afficherBoutiqueRotation(), afficherBoutiqueFun()]);
   demarrerCompteARebours();
 }
 
@@ -49,28 +48,28 @@ async function chargerPossedes() {
 
 
 // ---------------------------------------------------------------------
-// Boutique du jour
+// Boutique en rotation
 // ---------------------------------------------------------------------
-async function afficherBoutiqueDuJour() {
-  const { data: lignes, error } = await supabase
-    .from('daily_shop')
-    .select('price, stock, item:items(*)')
-    .eq('day', aujourdhui())
-    .order('price');
+async function afficherBoutiqueRotation() {
+  const { data, error } = await supabase.rpc('get_boutique');
 
   const zone = $('jour');
 
-  if (error) {
-    zone.innerHTML = `<p class="vide">Impossible de charger la boutique du jour.</p>`;
+  if (error || !data) {
+    zone.innerHTML = `<p class="vide">Impossible de charger la boutique.</p>`;
     return;
   }
-  if (!lignes?.length) {
+
+  finRotation = data.fin ? new Date(data.fin) : null;
+
+  const objets = data.objets ?? [];
+  if (!objets.length) {
     zone.innerHTML = `<p class="vide">Le marchand installe encore son étal… Reviens dans quelques minutes.</p>`;
     return;
   }
 
-  zone.innerHTML = lignes.map(({ price, stock, item }) => {
-    const epuise = stock <= 0;
+  zone.innerHTML = objets.map((item) => {
+    const epuise = item.stock <= 0;
     return `
       <article class="article${epuise ? ' article--epuise' : ''}">
         ${apercu(item)}
@@ -78,10 +77,10 @@ async function afficherBoutiqueDuJour() {
         <h3 class="article__nom">${esc(item.name)}</h3>
         ${item.description ? `<p class="article__desc">${esc(item.description)}</p>` : ''}
         <div class="article__pied">
-          <span class="article__prix">${price} <small>pièces</small></span>
-          <span class="article__stock">${epuise ? 'Épuisé' : `${stock} en stock`}</span>
+          <span class="article__prix">${item.price} <small>pièces</small></span>
+          <span class="article__stock">${epuise ? 'Épuisé' : `${item.stock} en stock`}</span>
         </div>
-        ${boutonAchat('jour', item.id, price, epuise ? 'Épuisé' : null)}
+        ${boutonAchat('jour', item.item_id, item.price, epuise ? 'Épuisé' : null)}
       </article>`;
   }).join('');
 
@@ -198,7 +197,7 @@ document.addEventListener('click', async (e) => {
 
   // On recharge tout pour afficher le nouveau solde, stock et état "Possédé"
   await Promise.all([chargerSolde(), chargerPossedes()]);
-  await Promise.all([afficherBoutiqueDuJour(), afficherBoutiqueFun()]);
+  await Promise.all([afficherBoutiqueRotation(), afficherBoutiqueFun()]);
 });
 
 
@@ -214,14 +213,20 @@ function notifier(message, type = 'ok') {
   minuteurNotif = setTimeout(() => n.classList.remove('notif--visible'), 4000);
 }
 
-// Temps restant avant minuit (heure de Paris)
+// Temps restant avant la fin de la rotation en cours (finRotation, depuis get_boutique)
+let rechargementEnCours = false;
 function demarrerCompteARebours() {
   const el = $('rebours');
-  const maj = () => {
-    const [h, m, s] = new Date()
-      .toLocaleTimeString('fr-FR', { timeZone: 'Europe/Paris', hour12: false })
-      .split(':').map(Number);
-    const reste = 24 * 3600 - (h * 3600 + m * 60 + s);
+  const maj = async () => {
+    if (!finRotation) return;
+    const reste = Math.round((finRotation.getTime() - Date.now()) / 1000);
+    if (reste <= 0) {
+      if (rechargementEnCours) return;
+      rechargementEnCours = true;
+      await afficherBoutiqueRotation();
+      rechargementEnCours = false;
+      return;
+    }
     const hh = Math.floor(reste / 3600);
     const mm = Math.floor((reste % 3600) / 60);
     el.textContent = `Nouvelle sélection dans ${hh} h ${String(mm).padStart(2, '0')}`;

@@ -16,7 +16,6 @@ const LIBELLES = { banner: 'Bannière', title: 'Titre', theme: 'Thème', rp: 'Ob
 const SOURCES  = { bot: 'En jeu', mj: 'MJ', boutique_jour: 'Boutique du jour', boutique_fun: 'Boutique fun' };
 const BOUTIQUES = { daily: 'Du jour', fun: 'Profil' };
 
-const aujourdhui = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' });
 const dateCourte = (d) => new Date(d).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 
 let moi = null;
@@ -244,25 +243,22 @@ function ligneTransaction(t, avecJoueur) {
 // Onglet Objets & boutique
 // ---------------------------------------------------------------------
 async function afficherObjets() {
-  const { data: jour } = await supabase
-    .from('daily_shop')
-    .select('price, stock, item:items(id, name)')
-    .eq('day', aujourdhui())
-    .order('price');
+  const { data: boutique } = await supabase.rpc('get_boutique');
+  const objetsRotation = boutique?.objets ?? [];
 
-  $('jour').innerHTML = jour?.length
-    ? jour.map(({ price, stock, item }) => `
+  $('jour').innerHTML = objetsRotation.length
+    ? objetsRotation.map((item) => `
         <li>
-          <div><strong>${esc(item.name)}</strong> <span class="doux">${price} pièces</span></div>
+          <div><strong>${esc(item.name)}</strong> <span class="doux">${item.price} pièces</span></div>
           <div class="actions">
-            <input class="champ champ--court" type="number" min="0" value="${stock}" data-stock="${item.id}" aria-label="Stock">
-            <button type="button" class="btn-lien" data-action="stock-jour" data-item="${item.id}">Enregistrer</button>
-            <button type="button" class="btn-lien" data-action="retirer-jour" data-item="${item.id}">Retirer</button>
+            <input class="champ champ--court" type="number" min="0" value="${item.stock}" data-stock="${item.item_id}" aria-label="Stock">
+            <button type="button" class="btn-lien" data-action="stock-jour" data-item="${item.item_id}">Enregistrer</button>
+            <button type="button" class="btn-lien" data-action="retirer-jour" data-item="${item.item_id}">Retirer</button>
           </div>
         </li>`).join('')
-    : '<p class="vide">Pas de boutique aujourd\'hui. Clique sur « Nouvelle sélection ».</p>';
+    : '<p class="vide">Pas de boutique en cours. Clique sur « Nouvelle sélection ».</p>';
 
-  const dejaAuJour = new Set((jour ?? []).map((l) => l.item.id));
+  const dejaAuJour = new Set(objetsRotation.map((it) => it.item_id));
   const ajoutables = items.filter((it) => it.shop === 'daily' && !dejaAuJour.has(it.id));
   const form = $('form-ajout-jour');
   form.hidden = !ajoutables.length;
