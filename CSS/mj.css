@@ -176,6 +176,17 @@
 .page-mj .btn-petit--rouge { border-color: var(--perte); color: var(--perte); }
 .page-mj .btn-petit--rouge:hover { background: var(--perte); color: var(--fond); }
 
+.page-mj .objet-catalogue__entete { display: flex; align-items: center; gap: 10px; }
+.page-mj .objet-catalogue__icone {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex: none;
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  background: var(--fond);
+}
+
 /* États */
 .page-mj .tx--annulee > div:first-child { opacity: .5; text-decoration: line-through; }
 .page-mj .objet--cache { opacity: .55; }

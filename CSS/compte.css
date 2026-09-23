@@ -314,10 +314,26 @@
 }
 .stat dt { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-doux); }
 .stat dd { margin: 4px 0 0; font-weight: 600; overflow-wrap: anywhere; }
+.stat__liste {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.stat__liste li {
+  padding: 5px 0;
+  border-top: 1px solid var(--bord);
+}
+.stat__liste li:first-child { border-top: 0; }
 
 /* Solde */
 .solde p { margin: 0; font-size: 2rem; font-weight: 700; }
-.solde__unite { font-size: 1rem; color: var(--texte-doux); font-weight: 400; }
+.piece-icone {
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+  vertical-align: -0.1em;
+  margin-left: 4px;
+}
 
 /* Listes */
 .grille {

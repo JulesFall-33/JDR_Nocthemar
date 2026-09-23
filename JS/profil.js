@@ -205,13 +205,21 @@ async function afficherPerso(discordId) {
   // Retire aussi Race/Genre/Niveau du reliquat, même s'ils n'ont pas de chip dédiée
   ['RACE', 'GENRE', 'NIVEAU'].forEach(trouverCle);
 
-  // Tout ce qui n'est pas reconnu ci-dessus : affiché tel quel, sans mise en forme spéciale
+  // Tout ce qui n'est pas reconnu ci-dessus : affiché tel quel, sans mise en forme spéciale.
+  // Une valeur "Objet A, Objet B, Objet C" est éclatée en liste pour rester lisible.
   const autresHtml = [...clesRestantes]
-    .map((cle) => `
+    .map((cle) => {
+      const val = data[cle];
+      const elements = typeof val === 'string' ? val.split(',').map((v) => v.trim()).filter(Boolean) : [];
+      const dd = elements.length > 1
+        ? `<dd><ul class="stat__liste">${elements.map((el) => `<li>${esc(el)}</li>`).join('')}</ul></dd>`
+        : `<dd>${esc(typeof val === 'object' ? JSON.stringify(val) : val)}</dd>`;
+      return `
       <div class="stat">
         <dt>${esc(cle)}</dt>
-        <dd>${esc(typeof data[cle] === 'object' ? JSON.stringify(data[cle]) : data[cle])}</dd>
-      </div>`)
+        ${dd}
+      </div>`;
+    })
     .join('');
 
   zone.innerHTML = `

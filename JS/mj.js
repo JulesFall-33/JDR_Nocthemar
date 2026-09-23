@@ -4,7 +4,7 @@
 //  vérifient côté serveur que la personne connectée est MJ.
 //  Cacher cette page ne suffirait pas : c'est la base qui protège.
 // =====================================================================
-import { supabase, getMonJoueur } from './supabase.js';
+import { supabase, getMonJoueur, SITE_ROOT } from './supabase.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -271,9 +271,12 @@ async function afficherObjets() {
   $('catalogue').innerHTML = items.length
     ? items.map((it) => `
         <li class="${it.is_available ? '' : 'objet--cache'}">
-          <div>
-            <span class="petit-type">${BOUTIQUES[it.shop]} · ${esc(LIBELLES[it.kind] ?? it.kind)}${it.is_available ? '' : ' · hors vente'}</span>
-            <strong>${esc(it.name)}</strong> <span class="doux">${it.price} pièces</span>
+          <div class="objet-catalogue__entete">
+            ${it.payload?.image ? `<img class="objet-catalogue__icone" src="${esc(new URL(it.payload.image, SITE_ROOT))}" alt="">` : ''}
+            <div>
+              <span class="petit-type">${BOUTIQUES[it.shop]} · ${esc(LIBELLES[it.kind] ?? it.kind)}${it.is_available ? '' : ' · hors vente'}</span>
+              <strong>${esc(it.name)}</strong> <span class="doux">${it.price} pièces</span>
+            </div>
           </div>
           <div class="actions">
             <button type="button" class="btn-lien" data-action="editer-objet" data-item="${it.id}">Modifier</button>
@@ -281,6 +284,10 @@ async function afficherObjets() {
           </div>
         </li>`).join('')
     : '<p class="vide">Catalogue vide.</p>';
+
+  $('catalogue').querySelectorAll('.objet-catalogue__icone').forEach((img) => {
+    img.addEventListener('error', () => img.remove(), { once: true });
+  });
 }
 
 // Formulaire d'objet (création ou modification)

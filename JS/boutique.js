@@ -73,6 +73,7 @@ async function afficherBoutiqueDuJour() {
     const epuise = stock <= 0;
     return `
       <article class="article${epuise ? ' article--epuise' : ''}">
+        ${apercu(item)}
         <span class="article__type">${esc(LIBELLES[item.kind] ?? item.kind)}</span>
         <h3 class="article__nom">${esc(item.name)}</h3>
         ${item.description ? `<p class="article__desc">${esc(item.description)}</p>` : ''}
@@ -83,6 +84,8 @@ async function afficherBoutiqueDuJour() {
         ${boutonAchat('jour', item.id, price, epuise ? 'Épuisé' : null)}
       </article>`;
   }).join('');
+
+  masquerImagesCassees(zone);
 }
 
 
@@ -123,10 +126,7 @@ async function afficherBoutiqueFun() {
       </article>`;
   }).join('');
 
-  // Image de bannière introuvable -> on retire l'aperçu au lieu d'afficher une image cassée
-  zone.querySelectorAll('.apercu img').forEach((img) => {
-    img.addEventListener('error', () => img.parentElement.remove(), { once: true });
-  });
+  masquerImagesCassees(zone);
 }
 
 // Petit aperçu visuel selon le type d'objet
@@ -141,7 +141,21 @@ function apercu(item) {
   if (item.kind === 'title' && p.text) {
     return `<div class="apercu apercu--titre">« ${esc(p.text)} »</div>`;
   }
+  // Tous les autres objets (potions, jetons…) peuvent avoir une petite icône (ex : emoji Discord)
+  if (item.kind !== 'banner' && p.image) {
+    return `<img class="article__icone" src="${esc(new URL(p.image, SITE_ROOT))}" alt="">`;
+  }
   return '';
+}
+
+// Image d'aperçu ou icône introuvable -> on la retire au lieu d'afficher une image cassée
+function masquerImagesCassees(zone) {
+  zone.querySelectorAll('.apercu img').forEach((img) => {
+    img.addEventListener('error', () => img.parentElement.remove(), { once: true });
+  });
+  zone.querySelectorAll('.article__icone').forEach((img) => {
+    img.addEventListener('error', () => img.remove(), { once: true });
+  });
 }
 
 
