@@ -39,13 +39,14 @@
 .btn-discord {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
+  gap: 6px;
+  padding: 6px 12px;
   border: 0;
   border-radius: var(--rayon);
   background: var(--discord);
   color: #fff;
   font: inherit;
+  font-size: .85rem;
   font-weight: 600;
   cursor: pointer;
   transition: filter .15s;
@@ -53,8 +54,8 @@
 .btn-discord:hover { filter: brightness(1.1); }
 
 .btn-discord__logo {
-  width: 18px;
-  height: 14px;
+  width: 15px;
+  height: 12px;
   background: currentColor;
   /* logo Discord simplifié en masque SVG */
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 127 96'%3E%3Cpath d='M107.7 8A105 105 0 0 0 81.5 0a72 72 0 0 0-3.4 6.9 97.7 97.7 0 0 0-29.1 0A72 72 0 0 0 45.6 0a105.9 105.9 0 0 0-26.3 8C2.8 32.7-1.7 56.7.5 80.4A105.7 105.7 0 0 0 32.7 96a78 78 0 0 0 6.9-11.2 68.4 68.4 0 0 1-10.8-5.2l2.7-2.1a75.6 75.6 0 0 0 64.3 0l2.7 2.1a68.7 68.7 0 0 1-10.9 5.2 77 77 0 0 0 6.9 11.2 105.3 105.3 0 0 0 32.2-15.6c2.6-27.5-4.5-51.3-18.9-72.4ZM42.5 65.9c-6.3 0-11.4-5.8-11.4-12.9s5-12.9 11.4-12.9 11.5 5.8 11.4 12.9-5 12.9-11.4 12.9Zm42.1 0c-6.3 0-11.4-5.8-11.4-12.9s5-12.9 11.4-12.9 11.5 5.8 11.4 12.9-5 12.9-11.4 12.9Z'/%3E%3C/svg%3E") center / contain no-repeat;
@@ -187,13 +188,125 @@
 .entete__titre { margin: 2px 0 0; color: var(--accent); font-style: italic; }
 
 /* Personnage */
-.perso__nom { margin: 0 0 12px; font-family: "Cinzel", serif; font-size: 1.3rem; }
+.perso__entete {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--bord);
+}
+.perso__nom { margin: 0; font-family: "Cinzel Decorative", serif; font-size: 1.35rem; }
+.perso__sous-titre {
+  margin: 0;
+  color: var(--accent);
+  font-style: italic;
+  font-size: .95rem;
+}
+
+/* Jauges : CA en badge, PV/XP en barres de progression */
+.perso__jauges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.jauge--badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 70px;
+  padding: 8px 14px;
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  background: var(--fond);
+}
+.jauge--badge .jauge__label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--texte-doux); }
+.jauge--badge .jauge__valeur { font-family: "Cinzel", serif; font-size: 1.15rem; font-weight: 700; }
+.jauge--ca .jauge__valeur { color: var(--accent); }
+
+.jauge--barre {
+  flex: 1 1 200px;
+  min-width: 160px;
+}
+.jauge__tete {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+  font-size: .78rem;
+}
+.jauge__tete .jauge__label { text-transform: uppercase; letter-spacing: .07em; color: var(--texte-doux); }
+.jauge__tete .jauge__valeur { font-weight: 600; }
+.jauge__piste {
+  height: 8px;
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  background: var(--fond);
+  overflow: hidden;
+}
+.jauge__remplissage {
+  height: 100%;
+  transition: width .4s ease;
+}
+.jauge--pv .jauge__remplissage { background: var(--perte); }
+.jauge--xp .jauge__remplissage { background: var(--accent); }
+
+/* Attributs : petites cartes uniformes, groupées */
+.perso__attributs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(74px, 1fr));
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.attribut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 6px;
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  background: var(--fond);
+  cursor: default;
+}
+.attribut__valeur { font-family: "Cinzel", serif; font-size: 1.05rem; font-weight: 700; }
+.attribut__label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: var(--texte-doux); }
+.attribut--pos .attribut__valeur { color: var(--gain); }
+.attribut--neg .attribut__valeur { color: var(--perte); }
+
+/* Identité : Héritage, Veine... sous forme d'étiquettes */
+.perso__identite {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-size: .82rem;
+}
+.chip__label { color: var(--texte-doux); text-transform: uppercase; font-size: .68rem; letter-spacing: .06em; }
+.chip__valeur { font-weight: 600; }
+.chip--vide { border-color: var(--bord); opacity: .6; }
+.chip--vide .chip__valeur { color: var(--texte-doux); font-weight: 400; }
+
+/* Reliquat : clés non reconnues, dans une grille simple comme avant */
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 10px;
   margin: 0;
 }
+.stats--autres { padding-top: 14px; border-top: 1px solid var(--bord); }
 .stat {
   padding: 10px 12px;
   border: 1px solid var(--bord);
@@ -257,4 +370,5 @@
   .entete__banniere { height: 120px; }
   .entete__avatar { width: 72px; height: 72px; }
   .entete h1 { font-size: 1.3rem; }
+  .perso__attributs { grid-template-columns: repeat(3, 1fr); }
 }

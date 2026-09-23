@@ -84,6 +84,31 @@ function afficherEntete(j) {
 }
 
 
+// Le format de "data" est décidé par le bot : ces listes servent juste à
+// reconnaître les clés connues pour les mettre en valeur. Tout le reste
+// (clés inconnues) s'affiche quand même, dans une zone générique en bas.
+const CLE_CA = 'CA';
+const CLES_JAUGES = ['PV', 'XP'];
+const ATTRIBUTS = [
+  ['AGI', 'Agilité'], ['FOR', 'Force'], ['CON', 'Constitution'],
+  ['PER', 'Perception'], ['ESP', 'Esprit'], ['CHA', 'Charisme'],
+];
+const CLES_IDENTITE = ['RACE', 'GENRE', 'NIVEAU', 'HERITAGE', 'VEINE'];
+const LIBELLES_IDENTITE = { RACE: 'Race', GENRE: 'Genre', NIVEAU: 'Niveau', HERITAGE: 'Héritage', VEINE: 'Veine' };
+
+// Enlève les accents pour comparer "HÉRITAGE" et "HERITAGE" sans se soucier de la casse
+const normaliser = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toUpperCase();
+
+const VIDE_RE = /^(—|-|vide|aucun[e]?|n\/a)$/i;
+
+function analyserFraction(val) {
+  const m = String(val).match(/^\s*(-?\d+(?:[.,]\d+)?)\s*\/\s*(-?\d+(?:[.,]\d+)?)\s*$/);
+  if (!m) return null;
+  const actuel = parseFloat(m[1].replace(',', '.'));
+  const max = parseFloat(m[2].replace(',', '.'));
+  return { actuel, max, pct: max > 0 ? Math.min(100, Math.max(0, (actuel / max) * 100)) : 0 };
+}
+
 async function afficherPerso(discordId) {
   const { data: perso } = await supabase
     .from('characters')
@@ -99,18 +124,106 @@ async function afficherPerso(discordId) {
     return;
   }
 
-  // Le format de "data" est décidé par le bot : on affiche tout ce qu'il contient
-  const lignes = Object.entries(perso.data || {})
-    .map(([cle, val]) => `
+  const data = perso.data || {};
+  const clesRestantes = new Set(Object.keys(data));
+  const trouverCle = (nom) => {
+    const cle = [...clesRestantes].find((c) => normaliser(c) === normaliser(nom));
+    if (cle) clesRestantes.delete(cle);
+    return cle;
+  };
+
+  // Sous-titre : Race · Genre · Niveau, seulement les infos présentes
+  const sousTitre = ['RACE', 'GENRE', 'NIVEAU']
+    .map((nom) => {
+      const cle = [...clesRestantes].find((c) => normaliser(c) === nom) ?? Object.keys(data).find((c) => normaliser(c) === nom);
+      const val = cle ? data[cle] : null;
+      return val && !VIDE_RE.test(String(val)) ? (nom === 'NIVEAU' ? `Niveau ${esc(val)}` : esc(val)) : null;
+    })
+    .filter(Boolean)
+    .join(' · ');
+
+  // Jauges : CA en badge, PV/XP en barres si elles ont un format "x / y"
+  let jaugesHtml = '';
+  const cleCA = trouverCle(CLE_CA);
+  if (cleCA) {
+    jaugesHtml += `
+      <div class="jauge jauge--badge jauge--ca">
+        <span class="jauge__label">${esc(cleCA)}</span>
+        <span class="jauge__valeur">${esc(data[cleCA])}</span>
+      </div>`;
+  }
+  for (const nom of CLES_JAUGES) {
+    const cle = trouverCle(nom);
+    if (!cle) continue;
+    const val = data[cle];
+    const frac = analyserFraction(val);
+    if (frac) {
+      jaugesHtml += `
+        <div class="jauge jauge--barre jauge--${nom.toLowerCase()}">
+          <div class="jauge__tete">
+            <span class="jauge__label">${esc(cle)}</span>
+            <span class="jauge__valeur">${esc(val)}</span>
+          </div>
+          <div class="jauge__piste"><div class="jauge__remplissage" style="width:${frac.pct}%"></div></div>
+        </div>`;
+    } else {
+      jaugesHtml += `
+        <div class="jauge jauge--badge">
+          <span class="jauge__label">${esc(cle)}</span>
+          <span class="jauge__valeur">${esc(val)}</span>
+        </div>`;
+    }
+  }
+
+  // Attributs : toujours dans le même ordre, avec libellé complet en infobulle
+  let attributsHtml = '';
+  for (const [nom, libelle] of ATTRIBUTS) {
+    const cle = trouverCle(nom);
+    if (!cle) continue;
+    const val = String(data[cle]);
+    const signe = /^\s*-/.test(val) ? 'neg' : /^\s*\+?0+\s*$/.test(val) ? 'neutre' : 'pos';
+    attributsHtml += `
+      <div class="attribut attribut--${signe}" title="${esc(libelle)}">
+        <span class="attribut__valeur">${esc(val)}</span>
+        <span class="attribut__label">${esc(nom)}</span>
+      </div>`;
+  }
+
+  // Identité : Héritage / Veine (Race, Genre, Niveau sont déjà dans le sous-titre)
+  let identiteHtml = '';
+  for (const nom of ['HERITAGE', 'VEINE']) {
+    const cle = trouverCle(nom);
+    if (!cle) continue;
+    const val = data[cle];
+    const estVide = VIDE_RE.test(String(val));
+    identiteHtml += `
+      <span class="chip${estVide ? ' chip--vide' : ''}">
+        <span class="chip__label">${esc(LIBELLES_IDENTITE[nom])}</span>
+        <span class="chip__valeur">${esc(val)}</span>
+      </span>`;
+  }
+  // Retire aussi Race/Genre/Niveau du reliquat, même s'ils n'ont pas de chip dédiée
+  ['RACE', 'GENRE', 'NIVEAU'].forEach(trouverCle);
+
+  // Tout ce qui n'est pas reconnu ci-dessus : affiché tel quel, sans mise en forme spéciale
+  const autresHtml = [...clesRestantes]
+    .map((cle) => `
       <div class="stat">
         <dt>${esc(cle)}</dt>
-        <dd>${esc(typeof val === 'object' ? JSON.stringify(val) : val)}</dd>
+        <dd>${esc(typeof data[cle] === 'object' ? JSON.stringify(data[cle]) : data[cle])}</dd>
       </div>`)
     .join('');
 
   zone.innerHTML = `
-    <h3 class="perso__nom">${esc(perso.name)}</h3>
-    ${lignes ? `<dl class="stats">${lignes}</dl>` : '<p class="vide">Fiche encore vide.</p>'}`;
+    <div class="perso__entete">
+      <h3 class="perso__nom">${esc(perso.name)}</h3>
+      ${sousTitre ? `<p class="perso__sous-titre">${sousTitre}</p>` : ''}
+    </div>
+    ${jaugesHtml ? `<div class="perso__jauges">${jaugesHtml}</div>` : ''}
+    ${attributsHtml ? `<div class="perso__attributs">${attributsHtml}</div>` : ''}
+    ${identiteHtml ? `<div class="perso__identite">${identiteHtml}</div>` : ''}
+    ${autresHtml ? `<dl class="stats stats--autres">${autresHtml}</dl>` : ''}
+    ${!jaugesHtml && !attributsHtml && !identiteHtml && !autresHtml ? '<p class="vide">Fiche encore vide.</p>' : ''}`;
 }
 
 
