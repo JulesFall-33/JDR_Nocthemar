@@ -1,6 +1,7 @@
 /* =====================================================================
-   Page boutique — utilise les variables de CSS/compte.css
-   (à charger APRÈS compte.css)
+   Page boutique — styles communs aux deux boutiques
+   Utilise les variables de CSS/compte.css (à charger APRÈS compte.css).
+   Spécifique : boutique-jour.css et boutique-profil.css
    ===================================================================== */
 
 .page-boutique .boutique-entete {
@@ -38,7 +39,6 @@
   gap: 8px;
 }
 .page-boutique .boutique-titre h2 { margin-bottom: 0; }
-.page-boutique .rebours { color: var(--texte-doux); font-size: .9rem; }
 .page-boutique .boutique-intro {
   margin: 6px 0 18px;
   color: var(--texte-doux);
@@ -63,7 +63,6 @@
   transition: border-color .15s;
 }
 .page-boutique .article:hover { border-color: var(--accent); }
-.page-boutique .article--epuise { opacity: .5; }
 
 .page-boutique .article__type {
   font-size: .7rem;
@@ -93,7 +92,6 @@
   color: var(--accent);
 }
 .page-boutique .article__prix small { font-weight: 400; color: var(--texte-doux); }
-.page-boutique .article__stock { font-size: .8rem; color: var(--texte-doux); }
 
 /* Bouton d'achat */
 .page-boutique .btn-acheter {
@@ -116,31 +114,6 @@
   border-color: var(--bord);
   color: var(--texte-doux);
   cursor: not-allowed;
-}
-
-/* Aperçus de la boutique fun */
-.page-boutique .apercu {
-  height: 70px;
-  margin: -14px -14px 6px;
-  border-bottom: 1px solid var(--bord);
-  border-radius: var(--rayon) var(--rayon) 0 0;
-  overflow: hidden;
-}
-.page-boutique .apercu img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.page-boutique .apercu--theme {
-  background: linear-gradient(135deg, var(--c), var(--fond));
-}
-.page-boutique .apercu--titre {
-  display: grid;
-  place-items: center;
-  color: var(--accent);
-  font-style: italic;
-  background: var(--carte);
 }
 
 /* Petite icône d'objet (potions, jetons…), au-dessus du nom */

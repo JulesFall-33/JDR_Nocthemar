@@ -9,6 +9,7 @@
   --texte: #f2eee6;        /* = --parchment du site */
   --texte-doux: #bcb2a4;   /* = --parchment-dim du site */
   --accent: #ece6d9;       /* = --bronze du site — remplacé par le thème équipé du joueur */
+  --accent2: var(--accent); /* 2e couleur du thème (optionnelle) — vaut --accent par défaut */
   --discord: #5865f2;      /* couleur de marque Discord, ne pas thémer */
   --gain: #6fbf73;
   --perte: #c22f38;        /* = --blood du site */
@@ -151,7 +152,7 @@
   font-size: 1.05rem;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent2);
 }
 .centre { text-align: center; }
 
@@ -253,7 +254,7 @@
   transition: width .4s ease;
 }
 .jauge--pv .jauge__remplissage { background: var(--perte); }
-.jauge--xp .jauge__remplissage { background: var(--accent); }
+.jauge--xp .jauge__remplissage { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
 
 /* Attributs : petites cartes uniformes, groupées */
 .perso__attributs {
@@ -314,16 +315,20 @@
 }
 .stat dt { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-doux); }
 .stat dd { margin: 4px 0 0; font-weight: 600; overflow-wrap: anywhere; }
+/* Une valeur en liste (ex : inventaire) prend toute la largeur, objets côte à côte */
+.stat:has(.stat__liste) { grid-column: 1 / -1; }
 .stat__liste {
   list-style: none;
-  margin: 4px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0;
   padding: 0;
 }
 .stat__liste li {
-  padding: 5px 0;
-  border-top: 1px solid var(--bord);
+  padding: 5px 12px;
+  border: 1px solid var(--bord);
 }
-.stat__liste li:first-child { border-top: 0; }
 
 /* Solde */
 .solde p { margin: 0; font-size: 2rem; font-weight: 700; }
@@ -351,6 +356,15 @@
   border-bottom: 1px solid var(--bord);
 }
 .liste > li:last-child { border-bottom: 0; }
+
+/* Liste limitée à quelques éléments visibles (hauteur fixée par profil.js), le reste défile */
+.liste--defilante {
+  position: relative;
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bord) transparent;
+}
 
 .objet__type {
   display: block;
@@ -386,6 +400,10 @@
   font-size: .8rem;
   color: var(--gain);
 }
+.btn-petit--equiper { border-color: var(--texte); color: var(--texte); }
+.btn-petit--equiper:hover { background: var(--texte); color: var(--fond); }
+.btn-petit--retirer { border-color: var(--perte); color: var(--perte); }
+.btn-petit--retirer:hover { background: var(--perte); color: var(--texte); }
 
 @media (max-width: 600px) {
   .entete__banniere { height: 120px; }

@@ -1,0 +1,11 @@
+/* =====================================================================
+   Boutique du jour (sélection gérée par le bot Discord)
+   (à charger APRÈS boutique.css)
+   ===================================================================== */
+
+/* Compte à rebours avant la prochaine sélection */
+.page-boutique .rebours { color: var(--texte-doux); font-size: .9rem; }
+
+/* Stock limité */
+.page-boutique .article--epuise { opacity: .5; }
+.page-boutique .article__stock { font-size: .8rem; color: var(--texte-doux); }

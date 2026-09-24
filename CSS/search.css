@@ -1,6 +1,8 @@
 /* ---------- RECHERCHE (composant partagé, toutes les pages) ---------- */
 .search-wrap{ position:relative; margin-left:auto; }
 .nav-links + .search-wrap{ margin-left:0; }
+/* Pages de catégorie : la recherche pousse déjà tout à droite, "← Catégories" suit le reste au lieu de s'isoler */
+.topbar .search-wrap ~ .back{ margin-left:0; }
 
 .nav-search{
   background:none; border:1px solid var(--line-strong);

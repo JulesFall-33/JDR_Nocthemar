@@ -79,7 +79,10 @@ function afficherEntete(j) {
     $('banniere').style.backgroundImage = `url("${new URL(j.banner.payload.image, SITE_ROOT)}")`;
   }
   if (j.theme?.payload?.accent) {
-    document.documentElement.style.setProperty('--accent', j.theme.payload.accent);
+    const { accent, accent2 } = j.theme.payload;
+    document.documentElement.style.setProperty('--accent', accent);
+    // Thème à une seule couleur : accent2 reprend accent
+    document.documentElement.style.setProperty('--accent2', accent2 || accent);
   }
 }
 
@@ -269,8 +272,8 @@ async function afficherInventaire(discordId, joueur) {
     let action = '';
     if (COSMETIQUES.includes(item.kind)) {
       action = equipes.includes(item.id)
-        ? `<span class="badge">Équipé</span>`
-        : `<button type="button" class="btn-petit" data-equiper="${item.id}">Équiper</button>`;
+        ? `<button type="button" class="btn-petit btn-petit--retirer" data-desequiper="${item.kind}">Retirer</button>`
+        : `<button type="button" class="btn-petit btn-petit--equiper" data-equiper="${item.id}">Équiper</button>`;
     }
     return `
       <li class="objet">
@@ -281,6 +284,20 @@ async function afficherInventaire(discordId, joueur) {
         ${action}
       </li>`;
   }).join('');
+
+  limiterHauteur(zone, 3);
+}
+
+
+// N'affiche que les `n` premiers éléments d'une liste, le reste est accessible en faisant défiler.
+// ResizeObserver : la liste est encore cachée au premier rendu, on mesure dès qu'elle devient visible.
+function limiterHauteur(liste, n) {
+  new ResizeObserver(() => {
+    const dernier = liste.children[n - 1];
+    liste.style.maxHeight = liste.children.length > n
+      ? `${dernier.offsetTop + dernier.offsetHeight}px`
+      : '';
+  }).observe(liste);
 }
 
 
@@ -310,13 +327,15 @@ async function afficherHistorique(discordId) {
 }
 
 
-// Bouton "Équiper" (un seul écouteur pour toute la liste)
+// Boutons "Équiper" / "Retirer" (un seul écouteur pour toute la liste)
 $('inventaire').addEventListener('click', async (e) => {
-  const bouton = e.target.closest('[data-equiper]');
-  if (!bouton) return;
+  const bouton = e.target.closest('[data-equiper], [data-desequiper]');
+  if (!bouton || bouton.disabled) return;
 
   bouton.disabled = true;
-  const { error } = await supabase.rpc('equip_cosmetic', { p_item_id: Number(bouton.dataset.equiper) });
+  const { error } = bouton.dataset.equiper
+    ? await supabase.rpc('equip_cosmetic', { p_item_id: Number(bouton.dataset.equiper) })
+    : await supabase.rpc('unequip_cosmetic', { p_kind: bouton.dataset.desequiper });
 
   if (error) {
     alert(error.message);
