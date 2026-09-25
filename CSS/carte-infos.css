@@ -33,7 +33,7 @@
   padding: .6cqw 1.4cqw;
   overflow: hidden;
   color: #efe6d2;
-  font-family: "EB Garamond", serif;
+  font-family: "EB Garamond","EB Garamond Repli", serif;
   line-height: 1.15;
   text-align: left;
   pointer-events: none;
@@ -52,7 +52,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-family: "Cinzel", serif;
+  font-family: "Cinzel","Cinzel Repli", serif;
   font-size: 4.2cqw;
   font-weight: 700;
   letter-spacing: .02em;
@@ -61,7 +61,7 @@
 /* Rang façon "PV" : rouge sang (Cinzel simple : en Decorative, le « I » ressemble à un « 1 ») */
 .carte-infos__rang {
   flex: none;
-  font-family: "Cinzel", serif;
+  font-family: "Cinzel","Cinzel Repli", serif;
   letter-spacing: .04em;
   font-size: 3.2cqw;
   font-weight: 700;
@@ -94,10 +94,10 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.carte-attaque__nom { font-family: "Cinzel", serif; font-size: 3.1cqw; font-weight: 600; }
+.carte-attaque__nom { font-family: "Cinzel","Cinzel Repli", serif; font-size: 3.1cqw; font-weight: 600; }
 .carte-attaque__effet { font-size: 2.5cqw; font-style: italic; color: #bcb2a4; }
 .carte-attaque__puissance {
-  font-family: "Cinzel", serif;
+  font-family: "Cinzel","Cinzel Repli", serif;
   font-size: 3.8cqw;
   font-weight: 700;
   text-shadow: 0 1px 2px #000;
@@ -109,7 +109,7 @@
   align-items: center;
   justify-content: center;
   gap: 1.2cqw;
-  font-family: "Cinzel", serif;
+  font-family: "Cinzel","Cinzel Repli", serif;
   font-size: 2.3cqw;
   letter-spacing: .12em;
   text-transform: uppercase;

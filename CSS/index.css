@@ -23,14 +23,14 @@ body{
   margin:0;
   background:var(--ink);
   color:var(--parchment);
-  font-family:"EB Garamond", serif;
+  font-family:"EB Garamond","EB Garamond Repli", serif;
   font-size:19px;
   line-height:1.7;
   max-width:100vw;
   overflow-x:hidden;
 }
 h1,h2,h3,h4,.disp{
-  font-family:"Cinzel", serif;
+  font-family:"Cinzel","Cinzel Repli", serif;
   font-weight:600;
   letter-spacing:0.02em;
   color:var(--parchment);
@@ -121,7 +121,7 @@ body::after{
   border-bottom:1px solid var(--line);
 }
 .topbar .brand{
-  font-family:"Cinzel Decorative", serif;
+  font-family:"Cinzel Decorative","Cinzel Decorative Repli", serif;
   font-size:1em;
   letter-spacing:0.04em;
   color:var(--bronze);
@@ -129,7 +129,7 @@ body::after{
   background:none; border:none; padding:0;
 }
 .topbar .brand-sub{
-  font-family:"EB Garamond", serif;
+  font-family:"EB Garamond","EB Garamond Repli", serif;
   font-style:italic;
   font-size:0.85em;
   color:var(--parchment-faint);
@@ -138,14 +138,14 @@ body::after{
 }
 .topbar .crumb{
   color:var(--parchment-faint);
-  font-family:"Cinzel"; font-size:0.85em;
+  font-family:"Cinzel", "Cinzel Repli", serif; font-size:0.85em;
 }
 .topbar .crumb .cur{ color:var(--blood); }
 .topbar .back{
   margin-left:auto;
   background:none; border:1px solid var(--line-strong);
   color:var(--parchment-dim);
-  font-family:"Cinzel"; font-size:0.75em; letter-spacing:0.06em;
+  font-family:"Cinzel", "Cinzel Repli", serif; font-size:0.75em; letter-spacing:0.06em;
   padding:0.6em 1.1em; cursor:pointer;
   transition:border-color .15s ease, color .15s ease;
 }
@@ -154,7 +154,7 @@ body::after{
 .nav-links{
   margin-left:auto;
   display:flex; align-items:center; gap:2.2em;
-  font-family:"Cinzel"; font-size:0.78em; letter-spacing:0.1em;
+  font-family:"Cinzel", "Cinzel Repli", serif; font-size:0.78em; letter-spacing:0.1em;
 }
 .nav-links a{
   color:var(--parchment-dim);
@@ -199,7 +199,7 @@ section.divider-dot::after{
 }
 
 .kicker{
-  font-family:"Cinzel", serif;
+  font-family:"Cinzel","Cinzel Repli", serif;
   font-size:0.78em;
   letter-spacing:0.14em;
   color:var(--parchment-faint);
@@ -212,7 +212,7 @@ section.divider-dot::after{
   border:1px solid var(--bronze-dim);
   background:radial-gradient(circle at 35% 30%, rgba(192,149,76,0.18), rgba(192,149,76,0.02));
   color:var(--bronze);
-  font-family:"Cinzel Decorative", serif;
+  font-family:"Cinzel Decorative","Cinzel Decorative Repli", serif;
   font-size:0.95em;
   box-shadow:inset 0 0 0 1px rgba(0,0,0,0.3), 0 0 12px rgba(192,149,76,0.08);
 }
@@ -236,7 +236,7 @@ h2.title{
   font-size:0.9em;
 }
 h3.subtitle{
-  font-family:"Cinzel", serif;
+  font-family:"Cinzel","Cinzel Repli", serif;
   font-size:1.7em;
   margin-bottom:0.5em;
   color:var(--parchment);
@@ -249,7 +249,7 @@ h3.subtitle{
   margin-bottom:2.2em;
 }
 .lede::first-letter{
-  font-family:"Cinzel Decorative", serif;
+  font-family:"Cinzel Decorative","Cinzel Decorative Repli", serif;
   font-style:normal;
   font-size:2.6em;
   line-height:0.5;
@@ -264,7 +264,7 @@ h3.subtitle{
 
 table{ width:100%; border-collapse:collapse; margin-top:2em; font-size:0.95em; }
 th,td{ text-align:left; padding:0.85em 1.2em; border-bottom:1px solid var(--line); vertical-align:top; }
-th{ font-family:"Cinzel"; font-weight:500; font-size:0.78em; letter-spacing:0.08em; color:var(--parchment-faint); border-bottom:1px solid var(--line-strong); }
+th{ font-family:"Cinzel", "Cinzel Repli", serif; font-weight:500; font-size:0.78em; letter-spacing:0.08em; color:var(--parchment-faint); border-bottom:1px solid var(--line-strong); }
 td{color:var(--parchment-dim);}
 td:first-child{color:var(--parchment); font-weight:500;}
 tr:hover td{background:rgba(222,210,171,0.02);}
@@ -283,7 +283,7 @@ tr:hover td{background:rgba(222,210,171,0.02);}
   max-width:none;
 }
 .hero-eyebrow{
-  font-family:"Cinzel";
+  font-family:"Cinzel", "Cinzel Repli", serif;
   font-size:0.85em;
   letter-spacing:0.15em;
   color:var(--blood);
@@ -291,7 +291,7 @@ tr:hover td{background:rgba(222,210,171,0.02);}
   margin-top:1.6em;
 }
 .hero h1{
-  font-family:"Cinzel Decorative", serif;
+  font-family:"Cinzel Decorative","Cinzel Decorative Repli", serif;
   font-size:clamp(2.1em, 5.2vw, 4.4em);
   line-height:1.12;
   max-width:16ch;
@@ -313,7 +313,7 @@ tr:hover td{background:rgba(222,210,171,0.02);}
 .hero-cta{
   margin-top:2.6em;
   display:inline-flex; align-items:center; gap:0.6em;
-  font-family:"Cinzel"; font-size:0.8em; letter-spacing:0.1em;
+  font-family:"Cinzel", "Cinzel Repli", serif; font-size:0.8em; letter-spacing:0.1em;
   color:var(--parchment);
   border:1px solid var(--line-strong);
   padding:0.95em 1.8em;
@@ -373,7 +373,7 @@ tr:hover td{background:rgba(222,210,171,0.02);}
   max-width:640px;
 }
 .hero-v2-title{
-  font-family:"Cinzel Decorative", serif;
+  font-family:"Cinzel Decorative","Cinzel Decorative Repli", serif;
   font-size:clamp(2.4em, 5.2vw, 4.2em);
   line-height:1.08;
   color:var(--parchment);
@@ -439,7 +439,7 @@ tr:hover td{background:rgba(222,210,171,0.02);}
   position:relative;
   overflow:hidden;
   transition:transform .3s ease, box-shadow .3s ease;
-  font-family:"EB Garamond", serif;
+  font-family:"EB Garamond","EB Garamond Repli", serif;
   container-type:inline-size;
 }
 .cat-tile:hover{
@@ -473,7 +473,7 @@ tr:hover td{background:rgba(222,210,171,0.02);}
 }
 .cat-tile .name{
   display:block;
-  font-family:"Cinzel", serif;
+  font-family:"Cinzel","Cinzel Repli", serif;
   font-weight:700;
   font-size:clamp(0.85rem, 5.3cqw, 1.8rem);
   letter-spacing:0.03em;
@@ -487,7 +487,7 @@ tr:hover td{background:rgba(222,210,171,0.02);}
 }
 .cat-tile .status{
   line-height:1.2;
-  font-family:"Cinzel"; font-size:clamp(0.55rem, 2.7cqw, 0.95rem); letter-spacing:0.08em;
+  font-family:"Cinzel", "Cinzel Repli", serif; font-size:clamp(0.55rem, 2.7cqw, 0.95rem); letter-spacing:0.08em;
   transition:letter-spacing .2s ease;
   text-shadow:
     0 2px 4px rgba(0,0,0,1),
@@ -513,14 +513,14 @@ tr:hover td{background:rgba(222,210,171,0.02);}
 
 footer{
   text-align:center; padding:3em; color:var(--parchment-faint); font-size:0.8em;
-  font-family:"Cinzel"; letter-spacing:0.06em;
+  font-family:"Cinzel", "Cinzel Repli", serif; letter-spacing:0.06em;
 }
 .credits{
   max-width:56ch; margin:0 auto 2.2em; padding-bottom:2em;
   border-bottom:1px solid var(--bronze-dim);
 }
 .credits-title{
-  font-family:"Cinzel"; font-size:1.35em; letter-spacing:0.1em;
+  font-family:"Cinzel", "Cinzel Repli", serif; font-size:1.35em; letter-spacing:0.1em;
   color:var(--bronze); margin:0 0 0.9em;
 }
 .credits-intro, .credits-outro{
@@ -563,7 +563,7 @@ footer{
 .d20-face{
   position:absolute; inset:0;
   display:flex; align-items:center; justify-content:center;
-  font-family:"Cinzel Decorative", serif;
+  font-family:"Cinzel Decorative","Cinzel Decorative Repli", serif;
   font-size:1.9em;
   color:var(--parchment);
   text-shadow:0 2px 6px rgba(0,0,0,0.8);
@@ -581,7 +581,7 @@ footer{
   to{ opacity:1; }
 }
 .d20-result{
-  font-family:"Cinzel", serif;
+  font-family:"Cinzel","Cinzel Repli", serif;
   font-size:1.1em;
   letter-spacing:0.04em;
   padding-left:0.04em;

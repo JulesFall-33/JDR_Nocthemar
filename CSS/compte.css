@@ -21,7 +21,7 @@
    topbar sur toutes les pages, y compris celles qui n'ont pas de nav-links
    (elles utilisent un fil d'Ariane "crumb" à la place). */
 .nav-boutique {
-  font-family: "Cinzel", serif;
+  font-family: "Cinzel","Cinzel Repli", serif;
   font-size: 0.78em;
   letter-spacing: 0.1em;
   color: var(--texte-doux);
@@ -34,7 +34,12 @@
 #discord-auth {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
+  /* Place réservée dès le chargement : le bouton (ou le pseudo) arrive après
+     la vérification du compte, et ne pousse plus les liens de la barre (CLS) */
+  min-width: 150px;
+  min-height: 32px;
 }
 
 .btn-discord {
@@ -93,7 +98,7 @@
   border: 1px solid var(--texte);
   border-radius: 50%;
   color: var(--texte);
-  font-family: "Cinzel", serif;
+  font-family: "Cinzel","Cinzel Repli", serif;
   font-size: .65rem;
   font-weight: 700;
   letter-spacing: .02em;
@@ -120,7 +125,7 @@
   min-height: 100vh;
   background: var(--fond);
   color: var(--texte);
-  font-family: "EB Garamond", serif;
+  font-family: "EB Garamond","EB Garamond Repli", serif;
 }
 
 .profil-wrap {
@@ -152,7 +157,7 @@
 }
 .carte h2 {
   margin: 0 0 14px;
-  font-family: "Cinzel", serif;
+  font-family: "Cinzel","Cinzel Repli", serif;
   font-size: 1.05rem;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -167,6 +172,11 @@
    sur un dégradé sombre qui garde le texte lisible quelle que soit l'image. */
 .entete {
   position: relative;
+  /* Si la bannière impose ses proportions (aspect-ratio, voir profil.js),
+     l'avatar et le pseudo restent calés en bas du cadre */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   border-radius: var(--rayon);
   overflow: hidden;
   border: 1px solid var(--bord);
@@ -201,7 +211,7 @@
   object-fit: cover;
   background: var(--fond);
 }
-.entete h1 { margin: 0; font-family: "Cinzel Decorative", serif; font-size: 1.6rem; }
+.entete h1 { margin: 0; font-family: "Cinzel Decorative","Cinzel Decorative Repli", serif; font-size: 1.6rem; }
 .entete__titre { margin: 2px 0 0; color: var(--accent); font-style: italic; }
 
 /* Personnage */
@@ -214,7 +224,7 @@
   padding-bottom: 12px;
   border-bottom: 1px solid var(--bord);
 }
-.perso__nom { margin: 0; font-family: "Cinzel Decorative", serif; font-size: 1.35rem; }
+.perso__nom { margin: 0; font-family: "Cinzel Decorative","Cinzel Decorative Repli", serif; font-size: 1.35rem; }
 .perso__sous-titre {
   margin: 0;
   color: var(--accent);
@@ -242,7 +252,7 @@
   background: var(--fond);
 }
 .jauge--badge .jauge__label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--texte-doux); }
-.jauge--badge .jauge__valeur { font-family: "Cinzel", serif; font-size: 1.15rem; font-weight: 700; }
+.jauge--badge .jauge__valeur { font-family: "Cinzel","Cinzel Repli", serif; font-size: 1.15rem; font-weight: 700; }
 .jauge--ca .jauge__valeur { color: var(--accent); }
 
 .jauge--barre {
@@ -290,7 +300,7 @@
   background: var(--fond);
   cursor: default;
 }
-.attribut__valeur { font-family: "Cinzel", serif; font-size: 1.05rem; font-weight: 700; }
+.attribut__valeur { font-family: "Cinzel","Cinzel Repli", serif; font-size: 1.05rem; font-weight: 700; }
 .attribut__label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: var(--texte-doux); }
 .attribut--pos .attribut__valeur { color: var(--gain); }
 .attribut--neg .attribut__valeur { color: var(--perte); }
@@ -364,7 +374,7 @@
   color: var(--texte-doux);
 }
 .perso__bourse-valeur {
-  font-family: "Cinzel", serif;
+  font-family: "Cinzel","Cinzel Repli", serif;
   font-size: 1.4rem;
   font-weight: 700;
 }

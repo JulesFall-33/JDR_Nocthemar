@@ -30,7 +30,7 @@
   width:100%; box-sizing:border-box;
   background:var(--ink); border:1px solid var(--line-strong);
   color:var(--parchment);
-  font-family:"EB Garamond", serif; font-size:0.95em; font-style:italic;
+  font-family:"EB Garamond","EB Garamond Repli", serif; font-size:0.95em; font-style:italic;
   padding:0.7em 0.9em;
   outline:none;
 }
@@ -47,7 +47,7 @@
 .search-item:last-child{ border-bottom:none; }
 .search-item:hover, .search-item.sel{ background:rgba(222,210,171,0.06); }
 .search-item .sr-name{
-  font-family:"Cinzel"; font-size:0.88em; letter-spacing:0.02em; color:var(--parchment);
+  font-family:"Cinzel", "Cinzel Repli", serif; font-size:0.88em; letter-spacing:0.02em; color:var(--parchment);
 }
 .search-item .sr-path{
   font-size:0.75em; color:var(--parchment-faint); font-style:italic;

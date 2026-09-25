@@ -73,6 +73,12 @@ function afficherEntete(j) {
 
   if (j.banner?.payload?.image) {
     $('banniere').style.backgroundImage = `url("${new URL(j.banner.payload.image, SITE_ROOT)}")`;
+    // Proportions de l'image (payload.ratio, ex : "2172 / 724") : le cadre prend la forme de
+    // l'image pour qu'elle s'affiche en entier. Fixé avant l'affichage, donc sans décalage (CLS).
+    const ratio = j.banner.payload.ratio;
+    if (/^\d+(\.\d+)?\s*\/\s*\d+(\.\d+)?$/.test(ratio ?? '')) {
+      $('banniere').parentElement.style.aspectRatio = ratio;
+    }
   }
   const accent = couleur(j.theme?.payload?.accent);
   if (accent) {
