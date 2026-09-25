@@ -5,6 +5,7 @@
 // =====================================================================
 import { supabase, connexionDiscord, getMonJoueur, SITE_ROOT } from './supabase.js';
 import { $, esc, couleur, LIBELLES, SOURCES } from './commun.js';
+import { chargerDeck, Deck, activerGlisser } from './cartes.js';
 
 // Le joueur + ses cosmétiques équipés, en une seule requête
 const SELECT_JOUEUR = `
@@ -41,11 +42,13 @@ async function init() {
     return;
   }
 
+  const estMoi = moi?.discord_id === discordId;
+
   afficherEntete(joueur);
-  await afficherPerso(discordId);
+  await Promise.all([afficherPerso(discordId), afficherDeck(discordId, estMoi)]);
 
   // Partie privée : seulement sur mon propre profil
-  if (moi && moi.discord_id === discordId) {
+  if (estMoi) {
     $('prive').hidden = false;
     await Promise.all([
       afficherSolde(discordId),
@@ -227,6 +230,22 @@ async function afficherPerso(discordId) {
     ${identiteHtml ? `<div class="perso__identite">${identiteHtml}</div>` : ''}
     ${autresHtml ? `<dl class="stats stats--autres">${autresHtml}</dl>` : ''}
     ${!jaugesHtml && !attributsHtml && !identiteHtml && !autresHtml ? '<p class="vide">Fiche encore vide.</p>' : ''}`;
+}
+
+
+// Deck de cartes : lecture seule pour les visiteurs ; sur mon profil,
+// je peux le renommer, retirer des cartes et les réorganiser en les glissant.
+async function afficherDeck(discordId, estMoi) {
+  const { nom, ids, cartes } = await chargerDeck(discordId);
+  const deck = new Deck($('deck'), { nom, ids, cartes, editable: estMoi, lienAjout: 'collection.html' });
+
+  if (!estMoi) return;
+  $('lien-collection').hidden = false;
+  activerGlisser($('deck'), {
+    poignee: '.deck-emplacement .carte-jeu',
+    cible: '.deck-emplacement',
+    deposer: (carte, cible) => deck.placer(Number(carte.dataset.carte), Number(cible.dataset.position)),
+  });
 }
 
 

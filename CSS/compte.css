@@ -83,15 +83,16 @@
 
 /* Lien "Panneau MJ", visible seulement pour les joueurs avec is_mj = true */
 /* Petit rond "MJ", même taille que le bouton de déconnexion */
+/* Couleur fixe (blanc du site) : ne suit pas le thème équipé par le joueur */
 .lien-mj {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--texte);
   border-radius: 50%;
-  color: var(--accent);
+  color: var(--texte);
   font-family: "Cinzel", serif;
   font-size: .65rem;
   font-weight: 700;
@@ -99,7 +100,7 @@
   white-space: nowrap;
   transition: background .15s, color .15s;
 }
-.lien-mj:hover { background: var(--accent); color: var(--fond); }
+.lien-mj:hover { background: var(--texte); color: var(--fond); }
 
 .btn-deco {
   width: 32px;

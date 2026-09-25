@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="CSS/index.css">
   <link rel="stylesheet" href="CSS/search.css">
   <link rel="stylesheet" href="CSS/compte.css">
+  <link rel="stylesheet" href="CSS/cartes-jeu.css">
 </head>
 <body class="page-profil">
 
@@ -89,8 +90,16 @@
         </div>
 
       </div>
+
+      <!-- Deck de cartes : visible par tous, modifiable seulement sur son propre profil -->
+      <section class="carte deck">
+        <div id="deck"></div>
+        <a id="lien-collection" class="btn-collection" href="collection.html" hidden>Ouvrir ma collection</a>
+      </section>
     </div>
   </main>
+
+  <div id="notif" class="notif" role="status" aria-live="polite"></div>
 
   <script src="JS/search.js"></script>
   <script type="module" src="JS/auth.js"></script>

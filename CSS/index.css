@@ -515,6 +515,24 @@ footer{
   text-align:center; padding:3em; color:var(--parchment-faint); font-size:0.8em;
   font-family:"Cinzel"; letter-spacing:0.06em;
 }
+.credits{
+  max-width:56ch; margin:0 auto 2.2em; padding-bottom:2em;
+  border-bottom:1px solid var(--bronze-dim);
+}
+.credits-title{
+  font-family:"Cinzel"; font-size:1.35em; letter-spacing:0.1em;
+  color:var(--bronze); margin:0 0 0.9em;
+}
+.credits-intro, .credits-outro{
+  font-style:italic; color:var(--parchment-dim);
+  letter-spacing:0.02em; font-size:1.1em; margin:0 0 1.1em;
+}
+.credits-outro{ margin:1.1em 0 0; }
+.credits-list{
+  list-style:none; margin:0; padding:0;
+  color:var(--parchment-dim); font-size:1.05em; letter-spacing:0.03em; line-height:1.7;
+}
+.credits-name{ color:var(--parchment); }
 
 /* ---------- D20 DICE ROLLER ---------- */
 .dice-panel{ text-align:center; padding-top:6em; padding-bottom:6em; }
