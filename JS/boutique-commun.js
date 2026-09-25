@@ -33,9 +33,10 @@ export function apercu(item) {
   if (item.kind === 'banner' && p.image) {
     return `<div class="apercu"><img src="${esc(new URL(p.image, SITE_ROOT))}" alt=""></div>`;
   }
-  if (item.kind === 'theme' && couleur(p.accent)) {
-    const c2 = couleur(p.accent2);
-    return `<div class="apercu apercu--theme" style="--c:${p.accent}${c2 ? `;--c2:${c2}` : ''}"></div>`;
+  // Thème : son nom dans la case (comme un titre) ; ses couleurs sont en pastilles sous le nom (pastilles())
+  if (item.kind === 'theme') {
+    const nom = item.name.match(/«\s*(.+?)\s*»/)?.[1] ?? item.name;
+    return `<div class="apercu apercu--titre">« ${esc(nom)} »</div>`;
   }
   if (item.kind === 'title' && p.text) {
     return `<div class="apercu apercu--titre">« ${esc(p.text)} »</div>`;
@@ -45,6 +46,16 @@ export function apercu(item) {
     return `<img class="article__icone" src="${esc(new URL(p.image, SITE_ROOT))}" alt="">`;
   }
   return '';
+}
+
+// Couleurs d'un thème en petites pastilles rondes (vide pour les autres objets)
+export function pastilles(item) {
+  if (item.kind !== 'theme') return '';
+  const couleurs = [item.payload?.accent, item.payload?.accent2].map(couleur).filter(Boolean);
+  if (!couleurs.length) return '';
+  return `<div class="pastilles" aria-label="Couleurs du thème">${
+    couleurs.map((c) => `<span class="pastille" style="--c:${c}" title="${c}"></span>`).join('')
+  }</div>`;
 }
 
 // Image d'aperçu ou icône introuvable -> on la retire au lieu d'afficher une image cassée

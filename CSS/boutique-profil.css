@@ -20,13 +20,25 @@
   filter: blur(6px);
   transform: scale(1.12);
 }
-.page-boutique .apercu--theme {
-  background: linear-gradient(135deg, var(--c), var(--c2, var(--fond)));
-}
 .page-boutique .apercu--titre {
   display: grid;
   place-items: center;
   color: var(--accent);
   font-style: italic;
   background: var(--carte);
+}
+
+/* Couleurs d'un thème : petites pastilles rondes sous le nom de l'article */
+.page-boutique .pastilles {
+  display: flex;
+  gap: 6px;
+  margin: 2px 0 6px;
+}
+.page-boutique .pastille {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--c);
+  border: 1px solid rgba(255,255,255,.25);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.4);
 }
