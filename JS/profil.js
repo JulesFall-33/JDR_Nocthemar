@@ -92,10 +92,10 @@ const ATTRIBUTS = [
   ['AGI', 'Agilité'], ['FOR', 'Force'], ['CON', 'Constitution'],
   ['PER', 'Perception'], ['ESP', 'Esprit'], ['CHA', 'Charisme'],
 ];
-const CLES_IDENTITE = ['RACE', 'GENRE', 'NIVEAU', 'HERITAGE', 'VEINE'];
-const LIBELLES_IDENTITE = { RACE: 'Race', GENRE: 'Genre', NIVEAU: 'Niveau', HERITAGE: 'Héritage', VEINE: 'Veine' };
+const CLES_IDENTITE = ['RACE', 'GENRE', 'NIVEAU', 'VEINE'];
+const LIBELLES_IDENTITE = { RACE: 'Race', GENRE: 'Genre', NIVEAU: 'Niveau', VEINE: 'Veine' };
 
-// Enlève les accents pour comparer "HÉRITAGE" et "HERITAGE" sans se soucier de la casse
+// Enlève les accents pour comparer "RÊVE" et "REVE" sans se soucier de la casse
 const normaliser = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toUpperCase();
 
 const VIDE_RE = /^(—|-|vide|aucun[e]?|n\/a)$/i;
@@ -188,9 +188,9 @@ async function afficherPerso(discordId) {
       </div>`;
   }
 
-  // Identité : Héritage / Veine (Race, Genre, Niveau sont déjà dans le sous-titre)
+  // Identité : Veine (Race, Genre, Niveau sont déjà dans le sous-titre)
   let identiteHtml = '';
-  for (const nom of ['HERITAGE', 'VEINE']) {
+  for (const nom of ['VEINE']) {
     const cle = trouverCle(nom);
     if (!cle) continue;
     const val = data[cle];
@@ -201,8 +201,9 @@ async function afficherPerso(discordId) {
         <span class="chip__valeur">${esc(val)}</span>
       </span>`;
   }
-  // Retire aussi Race/Genre/Niveau du reliquat, même s'ils n'ont pas de chip dédiée
-  ['RACE', 'GENRE', 'NIVEAU'].forEach(trouverCle);
+  // Retire aussi Race/Genre/Niveau du reliquat, même s'ils n'ont pas de chip dédiée,
+  // ainsi qu'un éventuel ancien champ Héritage (l'Héritage de Sang n'existe plus dans l'univers)
+  ['RACE', 'GENRE', 'NIVEAU', 'HERITAGE'].forEach(trouverCle);
 
   // Tout ce qui n'est pas reconnu ci-dessus : affiché tel quel, sans mise en forme spéciale.
   // Une valeur "Objet A, Objet B, Objet C" est éclatée en liste pour rester lisible.

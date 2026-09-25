@@ -163,23 +163,35 @@
 .vide { color: var(--texte-doux); font-style: italic; }
 
 /* En-tête */
+/* La bannière couvre tout le cadre ; avatar, pseudo et titre sont posés dessus,
+   sur un dégradé sombre qui garde le texte lisible quelle que soit l'image. */
 .entete {
+  position: relative;
   border-radius: var(--rayon);
   overflow: hidden;
   border: 1px solid var(--bord);
   background: var(--carte);
 }
 .entete__banniere {
-  height: 180px;
+  position: absolute;
+  inset: 0;
   background: linear-gradient(135deg, var(--carte), var(--fond)) center / cover;
 }
+.entete__banniere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, rgba(19,16,16,.55) 70%, rgba(19,16,16,.9) 100%);
+}
 .entete__infos {
+  position: relative;
   display: flex;
   align-items: flex-end;
   gap: 16px;
-  padding: 0 20px 18px;
-  margin-top: -48px;
+  padding: 132px 20px 18px;
 }
+.entete__infos h1,
+.entete__titre { text-shadow: 0 1px 3px rgba(0,0,0,.9), 0 0 12px rgba(0,0,0,.6); }
 .entete__avatar {
   width: 96px;
   height: 96px;
@@ -283,7 +295,7 @@
 .attribut--pos .attribut__valeur { color: var(--gain); }
 .attribut--neg .attribut__valeur { color: var(--perte); }
 
-/* Identité : Héritage, Veine... sous forme d'étiquettes */
+/* Identité : Veine... sous forme d'étiquettes */
 .perso__identite {
   display: flex;
   flex-wrap: wrap;
@@ -427,7 +439,7 @@
 .btn-petit--retirer:hover { background: var(--perte); color: var(--texte); }
 
 @media (max-width: 600px) {
-  .entete__banniere { height: 120px; }
+  .entete__infos { padding-top: 84px; }
   .entete__avatar { width: 72px; height: 72px; }
   .entete h1 { font-size: 1.3rem; }
   .perso__attributs { grid-template-columns: repeat(3, 1fr); }

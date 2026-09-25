@@ -10,8 +10,6 @@
     {name:"Accueil", path:"index.html", tag:"Codex"},
     {name:"Pouvoirs", path:"categories/Pouvoirs.html", tag:"Catégorie"},
     {name:"Les Veines", path:"categories/Les_Veines.html", tag:"Pouvoirs"},
-    {name:"Héritage de Sang", path:"categories/Héritage_de_sang.html", tag:"Pouvoirs",
-      keywords:["Valcor","Aster","Draven","Morn","Elyr","Kaelis","Veyra","Sang du Géant","Sang Lunaire","Sang Draconique","Sang Funéraire","Sang Féerique","Sang d'Argent","Sang Sauvage"]},
     {name:"Combat", path:"categories/Combat.html", tag:"Catégorie"},
     {name:"Bestiaire", path:"categories/Bestiaire.html", tag:"Catégorie",
       keywords:["Mange-cœur","Goule","Géant des os","Ours caveur","Élan noir","Géant des Collines","Chacal rouge","Slime","Lombre","Élan","Lièvre des landes","Lueurine","Renard","Blaireau","Hérisson","Écureuil","Sanglier","Chevreuil","Cerf","Mouton","Chèvre","Vache","Cochon","Âne","Chat","Chien","Cheval","Wyverne","Aigle géant","Aigle royal","Corbeau","Cigogne","Héron","Canard","Moineau","Hirondelle","Chouette","Pie","Pigeon","Poulet","Oie","Megalodon","Dos-de-vase","Grenouille cloche","Dauphin","Phoque","Poisson","Méduse","Huître","Carpe","Truite","Anguille","Écrevisse","Tortue de rivière","Loutre","Mouches de charogne","Abeille","Papillon","Libellule","Coccinelle","Luciole","Escargot","Araignée","Ver de terre"]},

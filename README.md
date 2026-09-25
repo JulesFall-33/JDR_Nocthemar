@@ -3,8 +3,6 @@
 
 - les slime dans bestiaire 
 
--changer les nom heritage de sangs
-
 -ameliorer categorie combat
 
 -sur le site mettre combat avant pouvoir 
