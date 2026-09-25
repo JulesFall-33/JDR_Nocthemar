@@ -50,6 +50,7 @@ async function init() {
   // Partie privée : seulement sur mon propre profil
   if (estMoi) {
     $('prive').hidden = false;
+    $('bourse').hidden = false;
     await Promise.all([
       afficherSolde(discordId),
       afficherInventaire(discordId, joueur),

@@ -334,8 +334,29 @@
   border: 1px solid var(--bord);
 }
 
-/* Solde */
-.solde p { margin: 0; font-size: 2rem; font-weight: 700; }
+/* Solde (bourse), en bas de la carte "Personnage actif" */
+.perso__bourse {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--bord);
+}
+.perso__bourse[hidden] { display: none; }
+.perso__bourse-label {
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--texte-doux);
+}
+.perso__bourse-valeur {
+  font-family: "Cinzel", serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.perso__bourse-valeur .piece-icone { margin-left: 0; margin-right: 2px; }
 .piece-icone {
   width: 1em;
   height: 1em;

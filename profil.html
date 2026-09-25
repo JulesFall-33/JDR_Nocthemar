@@ -67,15 +67,16 @@
       <section class="carte">
         <h2>Personnage actif</h2>
         <div id="perso"></div>
+
+        <!-- Bourse : visible uniquement sur son propre profil -->
+        <div id="bourse" class="perso__bourse" hidden>
+          <span class="perso__bourse-label">Bourse</span>
+          <span class="perso__bourse-valeur"><img class="piece-icone" src="img/Equipement/Or-icone.webp" alt="pièces"> <span id="solde">0</span></span>
+        </div>
       </section>
 
       <!-- Visible uniquement sur son propre profil -->
       <div id="prive" hidden>
-
-        <section class="carte solde">
-          <h2>Bourse</h2>
-          <p><span id="solde">0</span> <img class="piece-icone" src="img/Equipement/Or-icone.webp" alt="pièces"></p>
-        </section>
 
         <div class="grille">
           <section class="carte">
