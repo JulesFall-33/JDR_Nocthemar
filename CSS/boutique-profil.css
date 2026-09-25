@@ -15,6 +15,10 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  /* Aperçu flouté : on devine la bannière sans la voir en entier.
+     Le léger agrandissement évite les bords flous et transparents. */
+  filter: blur(6px);
+  transform: scale(1.12);
 }
 .page-boutique .apercu--theme {
   background: linear-gradient(135deg, var(--c), var(--c2, var(--fond)));
