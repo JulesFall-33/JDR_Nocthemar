@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="../CSS/Fiche_personnage.css">
 <link rel="stylesheet" href="../CSS/search.css">
 <link rel="stylesheet" href="../CSS/compte.css">
+<link rel="stylesheet" href="../CSS/carte-infos.css">
 </head>
 <body>
 <canvas id="embers"></canvas>
@@ -45,7 +46,7 @@
       <div class="card-art-frame">
         <div class="card-tilt">
           <div class="card-flip">
-            <div class="card-face card-face-front">
+            <div class="card-face card-face-front carte-infos-hote" data-carte-nom="Kaéliss">
               <img class="card-art" src="../img/Cartes/Ka%C3%A9liss-Carte.webp" alt="Carte de Kaéliss, Déesse du Sang">
             </div>
             <div class="card-face card-face-back">
@@ -64,17 +65,23 @@
           <a class="pbadge divinite" href="../categories/Religion.html">🕯️ Divinité — catégorie Religion</a>
         </div>
 
-        <p style="margin-top:1.8em;">Kaéliss est détentrice de la Veine du Sang — Rang I, Cœur Immuable, le plus haut degré de maîtrise connu. À ce niveau, le sang est une extension de sa volonté. Elle peut survivre à presque toute blessure tant qu'une goutte de son sang demeure, régénérer son corps, rendre la vie aux mourants et contrôler le sang d'autrui.</p>
+        <p style="margin-top:1.8em;">Il y a plusieurs siècles, des milliers d'enfants furent enlevés et enfermés dans les profondeurs d'une immense forteresse. Dans des cryptes dédiées aux anciens rites, ils servaient d'offrandes à des expériences mêlant Rituels et Pactes, dans l'espoir de reproduire le pouvoir des Veines.</p>
 
-        <p>Il y a plusieurs siècles, un empereur fit enfermer des milliers d'enfants dans les profondeurs de ses forteresses. Dans des cryptes dédiées aux anciens rites, ils servaient d'offrandes pour expérimenter Rituels et Pactes, dans l'espoir de reproduire le pouvoir des Veines.</p>
+        <p>Déterminée à les sauver, Kaéliss, alors simple mortelle dépourvue de pouvoirs, rassembla une confrérie de guerriers appelée les Sans-Bannière et prépara l'assaut de la forteresse.</p>
 
-        <p style="font-family:'Cinzel', serif; letter-spacing:0.04em; color:var(--bronze); margin:1.6em 0;">Puis Kaéliss vint.</p>
+        <p>Mais le soir de l'assaut, devant les portes mêmes de la prison, ses compagnons la trahirent. Ils la criblèrent de flèches avant de l'abandonner pour morte, baignant dans son propre sang.</p>
 
-        <p>Elle entra seule dans la forteresse. À l'aube, les enfants étaient libres, les chaînes brisées et les salles rituelles couvertes du sang de ceux qui les avaient torturés. Nul ne sait ce qu'il advint de l'empereur, mais son empire ne survécut pas longtemps.</p>
+        <p>Cette nuit-là, la Veine du Sang se manifesta en elle, directement au Rang I : Cœur Immuable, le plus haut degré de maîtrise connu. Son sang devint une extension de sa volonté. Les flèches furent rejetées de son corps, ses blessures se refermèrent et son cœur recommença à battre. Désormais, tant qu'une seule goutte de son sang subsistait, elle pouvait régénérer son corps, survivre à presque toute blessure, ramener les mourants à la vie et contrôler le sang d'autrui.</p>
 
-        <p>Les enfants sauvés transmirent son histoire à leurs descendants. Avec les siècles, Kaéliss devint bien plus qu'une simple détentrice de Veine : un symbole de liberté, de vie et de vengeance.</p>
+        <p style="font-family:'Cinzel', serif; letter-spacing:0.04em; color:var(--bronze); margin:1.6em 0;">Puis Kaéliss se releva.</p>
 
-        <p>Aujourd'hui, certains la prient comme une divinité.</p>
+        <p>Elle pénétra seule dans la forteresse. Ni les lames ni les flèches des gardes ne purent l'arrêter. Elle brisa les chaînes des prisonniers, rendit la vie aux enfants mourants et retourna le sang des tortionnaires contre eux. À l'aube, des milliers d'enfants étaient libres et les salles rituelles étaient couvertes du sang de ceux qui les avaient fait souffrir.</p>
+
+        <p>Nul ne sait ce qu'il advint des Sans-Bannière qui l'avaient trahie. Quant à la forteresse, elle fut abandonnée et ses cryptes condamnées.</p>
+
+        <p>Les enfants sauvés transmirent son histoire à leurs descendants. Au fil des siècles, Kaéliss devint bien plus qu'une détentrice de Veine : une divinité, symbole de liberté, de vie et de vengeance.</p>
+
+        <p>Aujourd'hui, elle est vénérée sous le nom de Divinité du Sang, Mère des Affranchis.</p>
 
         <div class="epithets">
           <p>La Mère des Libérés.</p>
@@ -93,5 +100,6 @@
 <script src="../JS/dice.js"></script>
 <script src="../JS/card-tilt.js"></script>
 <script type="module" src="../JS/auth.js"></script>
+<script type="module" src="../JS/carte-perso.js"></script>
 </body>
 </html>

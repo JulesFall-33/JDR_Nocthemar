@@ -535,7 +535,7 @@ footer{
 .credits-name{ color:var(--parchment); }
 
 /* ---------- D20 DICE ROLLER ---------- */
-.dice-panel{ text-align:center; padding-top:6em; padding-bottom:6em; }
+.dice-panel{ text-align:center; padding-top:6em; padding-bottom:6em; max-width:none; }
 .dice-panel .title{ margin-bottom:0.3em; }
 .d20-die{
   display:block;

@@ -18,18 +18,104 @@ export const RARETES = {
 };
 
 
+// Les 12 Veines (mêmes icônes que categories/Les_Veines.html)
+export const VEINES = {
+  sang:    ['Veine du Sang', '🩸'],       trone:  ['Veine du Trône', '👑'],
+  regard:  ['Veine du Regard', '👁️'],     reve:   ['Veine du Rêve', '🌙'],
+  tombeau: ['Veine du Tombeau', '⚰️'],    bete:   ['Veine de la Bête', '🐺'],
+  forge:   ['Veine de la Forge', '⚒️'],   maree:  ['Veine de la Marée', '🌊'],
+  racine:  ['Veine de la Racine', '🌿'],  esprit: ['Veine de l’Esprit', '🕯️'],
+  ombre:   ['Veine de l’Ombre', '🌑'],    chaine: ['Veine de la Chaîne', '⛓️'],
+};
+const RANGS = ['', 'I', 'II', 'III', 'IV', 'V'];   // Rang I = le plus puissant
+
+const attaquesDe = (carte) => [carte.attack_1, carte.attack_2].filter((a) => a?.nom);
+
+// Informations écrites dans le cadre noir du bas de la carte (nom, rang, attaques, rareté),
+// à la manière d'une carte Pokémon. Seulement pour les cartes qui ont un rang ou des attaques
+// (le Maître du Jeu, illustration pleine carte, n'en a pas).
+export function htmlInfos(carte, rarete = RARETES[carte.rarity] ? carte.rarity : 'commune') {
+  const attaques = attaquesDe(carte);
+  if (!carte.rank && !attaques.length) return '';
+
+  const lignes = attaques.map((a) => {
+    const [veine, icone] = VEINES[a.veine] ?? ['Veine inconnue', '✦'];
+    return `
+      <div class="carte-attaque">
+        <span class="carte-attaque__veine" title="${esc(veine)}">${icone}</span>
+        <span class="carte-attaque__texte">
+          <span class="carte-attaque__nom">${esc(a.nom)}</span>
+          ${a.effet ? `<span class="carte-attaque__effet">${esc(a.effet)}</span>` : ''}
+        </span>
+        ${a.puissance != null ? `<span class="carte-attaque__puissance">${esc(a.puissance)}</span>` : ''}
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="carte-infos carte-infos--${rarete}">
+      <div class="carte-infos__tete">
+        <span class="carte-infos__nom">${esc(carte.name)}</span>
+        ${RANGS[carte.rank] ? `<span class="carte-infos__rang">Rang ${RANGS[carte.rank]}</span>` : ''}
+      </div>
+      ${lignes ? `<div class="carte-infos__attaques">${lignes}</div>` : ''}
+      <div class="carte-infos__rarete"><span class="carte-infos__gemme"></span>${RARETES[rarete]}</div>
+    </div>`;
+}
+
+// Infobulle : tout le texte de la carte, lisible même quand la carte est petite
+function infobulleDe(carte, rarete) {
+  const lignes = [`${carte.name}${RANGS[carte.rank] ? ` — Rang ${RANGS[carte.rank]}` : ''} — ${RARETES[rarete]}`];
+  for (const a of attaquesDe(carte)) {
+    const puissance = a.puissance != null ? ` (${a.puissance})` : '';
+    lignes.push(`${VEINES[a.veine]?.[1] ?? '✦'} ${a.nom}${puissance}${a.effet ? ` : ${a.effet}` : ''}`);
+  }
+  if (carte.description) lignes.push(carte.description);
+  return lignes.join('\n');
+}
+
 // Une carte (image + nom de secours si l'image manque)
 export function htmlCarte(carte) {
   const rarete = RARETES[carte.rarity] ? carte.rarity : 'commune';
-  const infobulle = `${carte.name} — ${RARETES[rarete]}${carte.description ? `\n${carte.description}` : ''}`;
   const image = carte.image
     ? `<img src="${esc(new URL(carte.image, SITE_ROOT))}" alt="" draggable="false" loading="lazy">`
     : '';
   return `
-    <div class="carte-jeu carte-jeu--${rarete}${image ? '' : ' carte-jeu--sans-image'}" data-carte="${carte.id}" title="${esc(infobulle)}">
+    <div class="carte-jeu carte-jeu--${rarete}${image ? '' : ' carte-jeu--sans-image'}" data-carte="${carte.id}" title="${esc(infobulleDe(carte, rarete))}">
       ${image}
+      ${image ? htmlInfos(carte, rarete) : ''}
       <span class="carte-jeu__nom">${esc(carte.name)}</span>
     </div>`;
+}
+
+// Loupe : affiche la carte en grand, avec toutes ses informations lisibles
+export function boutonLoupe(id) {
+  return `<button type="button" class="carte-loupe" data-action="loupe" data-loupe="${id}" title="Voir la carte en grand" aria-label="Voir la carte en grand">🔍</button>`;
+}
+
+export function ouvrirApercu(carte) {
+  if (!carte) return;
+  const retour = document.activeElement;
+  const fond = document.createElement('div');
+  fond.className = 'apercu-carte';
+  fond.setAttribute('role', 'dialog');
+  fond.setAttribute('aria-modal', 'true');
+  fond.setAttribute('aria-label', carte.name);
+  fond.innerHTML = `
+    <div class="apercu-carte__carte">${htmlCarte(carte)}</div>
+    <button type="button" class="apercu-carte__fermer" aria-label="Fermer">×</button>`;
+
+  const clavier = (e) => { if (e.key === 'Escape') fermer(); };
+  const fermer = () => {
+    fond.remove();
+    document.removeEventListener('keydown', clavier);
+    retour?.focus?.();
+  };
+  // Clic à côté de la carte ou sur × : fermeture
+  fond.addEventListener('click', (e) => { if (!e.target.closest('.carte-jeu')) fermer(); });
+  document.addEventListener('keydown', clavier);
+
+  document.body.append(fond);
+  fond.querySelector('.apercu-carte__fermer').focus();
 }
 
 // Image introuvable -> on garde le cadre de la carte avec son nom
@@ -90,6 +176,7 @@ export class Deck {
                 <img src="${esc(new URL(VERSOS[carte.rarity] ?? VERSO_DEFAUT, SITE_ROOT))}" alt="" draggable="false" loading="lazy">
               </div>
             </div>
+            ${boutonLoupe(carte.id)}
             ${this.editable ? `<button type="button" class="deck-retirer" data-action="retirer" data-position="${i}" title="Retirer du deck" aria-label="Retirer ${esc(carte.name)} du deck">×</button>` : ''}
           </div>`;
       }
@@ -164,6 +251,7 @@ export class Deck {
       if (flip) this.#retourner(flip);
       return;
     }
+    if (bouton.dataset.action === 'loupe') return ouvrirApercu(this.cartes.get(Number(bouton.dataset.loupe)));
     if (!this.editable) return;
     if (bouton.dataset.action === 'retirer') this.retirer(Number(bouton.dataset.position));
     if (bouton.dataset.action === 'renommer') this.#formulaireNom();

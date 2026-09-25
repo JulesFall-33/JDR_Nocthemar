@@ -8,7 +8,7 @@
 // =====================================================================
 import { supabase, connexionDiscord, getMonJoueur } from './supabase.js';
 import { $, notifier } from './commun.js';
-import { htmlCarte, chargerDeck, Deck, activerGlisser } from './cartes.js';
+import { htmlCarte, chargerDeck, Deck, activerGlisser, boutonLoupe, ouvrirApercu } from './cartes.js';
 
 const PAR_PAGE = 9;
 const PAGES_MAX = 100;
@@ -103,6 +103,7 @@ function htmlPage(num, cote) {
         ${htmlCarte(etat.cartes.get(id).carte)}
         <button type="button" class="carte-etoile${auDeck ? ' carte-etoile--active' : ''}" data-etoile="${id}"
           aria-pressed="${auDeck}" title="${auDeck ? 'Retirer du deck' : 'Ajouter au deck'}">★</button>
+        ${boutonLoupe(id)}
       </div>`;
   }
 
@@ -265,6 +266,12 @@ window.addEventListener('pointerup', () => {
 
 // Sans glisser : toucher une carte, puis une pochette (ou un emplacement du deck)
 $('collection').addEventListener('click', (e) => {
+  const loupe = e.target.closest('#double [data-loupe]');
+  if (loupe) {
+    ouvrirApercu(etat.cartes.get(Number(loupe.dataset.loupe))?.carte);
+    return;
+  }
+
   const etoile = e.target.closest('[data-etoile]');
   if (etoile) {
     const id = Number(etoile.dataset.etoile);

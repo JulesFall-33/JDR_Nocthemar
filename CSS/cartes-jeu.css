@@ -264,3 +264,68 @@ body.glisser-actif, body.glisser-actif * { cursor: grabbing !important; }
 .notif--visible { opacity: 1; transform: translate(-50%, 0); }
 .notif--ok     { border-color: var(--gain); }
 .notif--erreur { border-color: var(--perte); }
+
+
+/* Informations dans le cadre noir de la carte : voir CSS/carte-infos.css */
+
+
+/* ---------- Loupe et aperçu en grand ---------- */
+.carte-loupe {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgba(217,183,122,.6);
+  border-radius: 50%;
+  background: rgba(20,12,8,.8);
+  font-size: .7rem;
+  line-height: 1;
+  cursor: zoom-in;
+  opacity: .75;
+  transition: opacity .15s, transform .15s;
+}
+.carte-loupe:hover, .carte-loupe:focus-visible { opacity: 1; transform: scale(1.12); }
+
+.apercu-carte {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(8,5,5,.82);
+  backdrop-filter: blur(3px);
+  animation: apercu-fondu .2s ease;
+  cursor: zoom-out;
+}
+.apercu-carte__carte {
+  width: min(88vw, 440px, calc((100vh - 48px) / 1.5));
+  animation: apercu-entree .25s ease;
+}
+.apercu-carte .carte-jeu { cursor: default; }
+.apercu-carte .carte-jeu:hover { transform: none; }
+.apercu-carte__fermer {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--bord);
+  border-radius: 50%;
+  background: var(--carte);
+  color: var(--texte);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.apercu-carte__fermer:hover { border-color: var(--accent); color: var(--accent); }
+@keyframes apercu-fondu { from { opacity: 0; } }
+@keyframes apercu-entree { from { transform: scale(.92); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .apercu-carte, .apercu-carte__carte { animation: none; }
+}
