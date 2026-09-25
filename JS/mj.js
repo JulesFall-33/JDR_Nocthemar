@@ -5,18 +5,11 @@
 //  Cacher cette page ne suffirait pas : c'est la base qui protège.
 // =====================================================================
 import { supabase, getMonJoueur, SITE_ROOT } from './supabase.js';
+import { $, esc, LIBELLES as LIBELLES_COMMUNS, SOURCES, notifier } from './commun.js';
 
-const $ = (id) => document.getElementById(id);
+const LIBELLES = { ...LIBELLES_COMMUNS, rp: 'Objet RP' };
+const BOUTIQUES = { daily: 'Du marchand', fun: 'Profil' };
 
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => (
-  { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-));
-
-const LIBELLES = { banner: 'Bannière', title: 'Titre', theme: 'Thème', rp: 'Objet RP', wallpaper: 'Fond', access: 'Accès', other: 'Divers' };
-const SOURCES  = { bot: 'En jeu', mj: 'MJ', boutique_jour: 'Boutique du jour', boutique_fun: 'Boutique fun' };
-const BOUTIQUES = { daily: 'Du jour', fun: 'Profil' };
-
-const aujourdhui = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' });
 const dateCourte = (d) => new Date(d).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 
 let moi = null;
@@ -244,10 +237,12 @@ function ligneTransaction(t, avecJoueur) {
 // Onglet Objets & boutique
 // ---------------------------------------------------------------------
 async function afficherObjets() {
+  // Créneau de 5 h en cours (la boutique du marchand ne change plus par jour)
+  const { data: slot } = await supabase.rpc('current_shop_slot');
   const { data: jour } = await supabase
     .from('daily_shop')
     .select('price, stock, item:items(id, name)')
-    .eq('day', aujourdhui())
+    .eq('slot', slot)
     .order('price');
 
   $('jour').innerHTML = jour?.length
@@ -260,7 +255,7 @@ async function afficherObjets() {
             <button type="button" class="btn-lien" data-action="retirer-jour" data-item="${item.id}">Retirer</button>
           </div>
         </li>`).join('')
-    : '<p class="vide">Pas de boutique aujourd\'hui. Clique sur « Nouvelle sélection ».</p>';
+    : '<p class="vide">Pas de boutique pour ce créneau. Clique sur « Nouvelle sélection ».</p>';
 
   const dejaAuJour = new Set((jour ?? []).map((l) => l.item.id));
   const ajoutables = items.filter((it) => it.shop === 'daily' && !dejaAuJour.has(it.id));
@@ -303,7 +298,7 @@ function ouvrirFormObjet(item = null) {
       <label>Prix <input name="prix" class="champ" type="number" min="0" required value="${item?.price ?? 50}"></label>
       <label>Boutique
         <select name="boutique" class="champ">
-          <option value="daily"${item?.shop === 'daily' ? ' selected' : ''}>Boutique du jour</option>
+          <option value="daily"${item?.shop === 'daily' ? ' selected' : ''}>Boutique du marchand</option>
           <option value="fun"${item?.shop === 'fun' ? ' selected' : ''}>Boutique du profil</option>
         </select>
       </label>
@@ -313,11 +308,12 @@ function ouvrirFormObjet(item = null) {
         </select>
       </label>
       <label class="large">Description <textarea name="description" class="champ" rows="2">${esc(item?.description)}</textarea></label>
-      <label>Stock min (du jour) <input name="stock_min" class="champ" type="number" min="0" value="${item?.min_stock ?? 1}"></label>
-      <label>Stock max (du jour) <input name="stock_max" class="champ" type="number" min="0" value="${item?.max_stock ?? 5}"></label>
+      <label>Stock min (marchand) <input name="stock_min" class="champ" type="number" min="0" value="${item?.min_stock ?? 1}"></label>
+      <label>Stock max (marchand) <input name="stock_max" class="champ" type="number" min="0" value="${item?.max_stock ?? 5}"></label>
       <label>Image (bannière) <input name="image" class="champ" placeholder="images/bannieres/xxx.jpg" value="${esc(p.image)}"></label>
       <label>Texte (titre) <input name="texte" class="champ" value="${esc(p.text)}"></label>
       <label>Couleur (thème) <input name="couleur" class="champ" placeholder="#8b1e2d" value="${esc(p.accent)}"></label>
+      <label>Couleur 2 (thème, optionnelle) <input name="couleur2" class="champ" placeholder="#d4b537" value="${esc(p.accent2)}"></label>
       <label>ID rôle Discord (optionnel) <input name="role" class="champ" value="${esc(p.discord_role_id)}"></label>
       <label class="case"><input name="en_vente" type="checkbox"${item?.is_available === false ? '' : ' checked'}> En vente</label>
     </div>
@@ -370,8 +366,8 @@ document.addEventListener('click', async (e) => {
       break;
 
     case 'regenerer':
-      if (!confirm('Tirer une nouvelle sélection ? Celle d\'aujourd\'hui sera remplacée (les achats déjà faits restent).')) return;
-      if (await rpc('mj_regenerate_daily_shop', {}, 'Nouvelle sélection du jour')) await afficherObjets();
+      if (!confirm('Tirer une nouvelle sélection ? Celle du créneau en cours sera remplacée (les achats déjà faits restent).')) return;
+      if (await rpc('mj_regenerate_daily_shop', {}, 'Nouvelle sélection du marchand')) await afficherObjets();
       break;
 
     case 'stock-jour': {
@@ -381,7 +377,7 @@ document.addEventListener('click', async (e) => {
     }
 
     case 'retirer-jour':
-      if (await rpc('mj_remove_daily_item', { p_item_id: itemId }, 'Retiré de la boutique du jour')) await afficherObjets();
+      if (await rpc('mj_remove_daily_item', { p_item_id: itemId }, 'Retiré de la boutique du marchand')) await afficherObjets();
       break;
 
     case 'nouvel-objet':
@@ -442,15 +438,18 @@ document.addEventListener('submit', async (e) => {
 
     case 'form-ajout-jour':
       if (await rpc('mj_add_daily_item', { p_item_id: Number(form.elements.namedItem('objet').value), p_stock: Number(form.elements.namedItem('stock').value) },
-        'Ajouté à la boutique du jour')) await afficherObjets();
+        'Ajouté à la boutique du marchand')) await afficherObjets();
       break;
 
     case 'form-objet': {
       const champ = (nom) => form.elements.namedItem(nom);
-      const payload = {};
-      for (const [nom, cle] of [['image', 'image'], ['texte', 'text'], ['couleur', 'accent'], ['role', 'discord_role_id']]) {
+      // On part du payload existant : les clés sans champ ici (emoji, rarete… utilisées par le bot) sont conservées
+      const existant = items.find((it) => String(it.id) === champ('item_id').value)?.payload ?? {};
+      const payload = { ...existant };
+      for (const [nom, cle] of [['image', 'image'], ['texte', 'text'], ['couleur', 'accent'], ['couleur2', 'accent2'], ['role', 'discord_role_id']]) {
         const v = champ(nom).value.trim();
         if (v) payload[cle] = v;
+        else delete payload[cle];
       }
       const ok = await rpc('mj_save_item', {
         p_item: {
@@ -476,17 +475,5 @@ document.addEventListener('submit', async (e) => {
   }
 });
 
-
-// ---------------------------------------------------------------------
-// Notification
-// ---------------------------------------------------------------------
-let minuteurNotif;
-function notifier(message, type = 'ok') {
-  const n = $('notif');
-  n.textContent = message;
-  n.className = `notif notif--${type} notif--visible`;
-  clearTimeout(minuteurNotif);
-  minuteurNotif = setTimeout(() => n.classList.remove('notif--visible'), 4000);
-}
 
 init();

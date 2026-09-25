@@ -80,7 +80,7 @@ body::after{
   opacity:0.5;
 }
 
-/* orbes d'ambiance â€” trÃ¨s discrÃ¨tes, coins de l'Ã©cran */
+/* orbes d'ambiance — très discrètes, coins de l'écran */
 .orb{
   position:fixed;
   border-radius:50%;
@@ -228,7 +228,7 @@ h2.title{
   position:relative;
 }
 .sub-divider::after{
-  content:"â¦";
+  content:"¾6";
   position:absolute; top:-0.7em; left:0;
   background:var(--ink);
   padding-right:0.8em;
@@ -418,11 +418,10 @@ tr:hover td{background:rgba(222,210,171,0.02);}
 }
 
 /* ---------- CATEGORY HUB GRID ---------- */
-/* Each tile's artwork (img/titles/*.jpg) is pre-cropped to just the
-   gold-framed illustration (the original black matte was cut off with a
-   PowerShell/System.Drawing pass; originals kept in img/titles/_originals).
-   The image now fills the whole tile (no separate opaque label box, which
-   read as a flat grey rectangle) â€” icon/name/status sit directly on top,
+/* Each tile's artwork (img/titles/*.webp) is pre-cropped to just the
+   gold-framed illustration.
+   The image fills the whole tile (no separate opaque label box, which
+   read as a flat grey rectangle) — icon/name/status sit directly on top,
    kept legible with drop-shadow/text-shadow instead of a background block. */
 .hub-grid{
   display:grid;
@@ -591,7 +590,7 @@ footer{
   .topbar{padding:1em 5vw;}
 }
 
-/* ---------- TÃ‰LÃ‰PHONES ---------- */
+/* ---------- TÉLÉPHONES ---------- */
 @media (max-width: 600px){
   body{font-size:16.5px;}
   section{padding:3em 5.5vw;}
@@ -628,7 +627,7 @@ footer{
   .topbar .brand{font-size:0.9em;}
 }
 
-/* ---------- CARTES â€” HUB ---------- */
+/* ---------- CARTES — HUB ---------- */
 :root{
   --frost:#8fb8c9;
   --frost-dim:#4c6b76;

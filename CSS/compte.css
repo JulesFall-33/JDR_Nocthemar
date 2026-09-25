@@ -82,17 +82,20 @@
 }
 
 /* Lien "Panneau MJ", visible seulement pour les joueurs avec is_mj = true */
+/* Petit rond "MJ", même taille que le bouton de déconnexion */
 .lien-mj {
   display: inline-flex;
   align-items: center;
-  padding: 3px 8px;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   border: 1px solid var(--accent);
-  border-radius: var(--rayon);
+  border-radius: 50%;
   color: var(--accent);
   font-family: "Cinzel", serif;
-  font-size: .7rem;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .02em;
   white-space: nowrap;
   transition: background .15s, color .15s;
 }
@@ -396,10 +399,6 @@
 .btn-petit:hover { background: var(--accent); color: var(--fond); }
 .btn-petit:disabled { opacity: .5; cursor: wait; }
 
-.badge {
-  font-size: .8rem;
-  color: var(--gain);
-}
 .btn-petit--equiper { border-color: var(--texte); color: var(--texte); }
 .btn-petit--equiper:hover { background: var(--texte); color: var(--fond); }
 .btn-petit--retirer { border-color: var(--perte); color: var(--perte); }

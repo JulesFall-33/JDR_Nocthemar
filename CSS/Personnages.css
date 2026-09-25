@@ -80,7 +80,7 @@ body::after{
   opacity:0.5;
 }
 
-/* orbes d'ambiance â€” trÃ¨s discrÃ¨tes, coins de l'Ã©cran */
+/* orbes d'ambiance — très discrètes, coins de l'écran */
 .orb{
   position:fixed;
   border-radius:50%;
@@ -237,7 +237,7 @@ h2.title{
   position:relative;
 }
 .sub-divider::after{
-  content:"â¦";
+  content:"¾6";
   position:absolute; top:-0.7em; left:0;
   background:var(--ink);
   padding-right:0.8em;
@@ -305,7 +305,7 @@ footer{
   .topbar{padding:1em 5vw;}
 }
 
-/* ---------- TÃ‰LÃ‰PHONES ---------- */
+/* ---------- TÉLÉPHONES ---------- */
 @media (max-width: 600px){
   body{font-size:16.5px;}
   section{padding:3em 5.5vw;}
@@ -342,7 +342,7 @@ footer{
   .topbar .brand{font-size:0.9em;}
 }
 
-/* ---------- PERSONNAGES â€” GALERIE ---------- */
+/* ---------- PERSONNAGES — GALERIE ---------- */
 .char-roster{
   display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
   gap:3.4em 1.8em; margin-top:3.4em;
@@ -388,7 +388,7 @@ footer{
   color:var(--parchment); border-top:1px solid var(--blood-dim);
 }
 
-/* accent de couleur par personnage (par dÃ©faut : sang) */
+/* accent de couleur par personnage (par défaut : sang) */
 .char-card.dalek{ border-color:#8a7226; box-shadow:inset 0 0 0 3px rgba(95,138,74,0.22); }
 .char-card.dalek:hover, .char-card.dalek:active{ border-color:#c9a83a; box-shadow:inset 0 0 0 3px rgba(95,138,74,0.38); }
 .char-card.dalek .frame-corner.tl, .char-card.dalek .frame-corner.tr{ background:#8a7226; }

@@ -64,8 +64,9 @@
 
   let running = true;
   document.addEventListener('visibilitychange', () => {
+    const relance = !running && !document.hidden; // évite de lancer deux boucles d'animation en parallèle
     running = !document.hidden;
-    if(running) requestAnimationFrame(draw);
+    if(relance) requestAnimationFrame(draw);
   });
 
   function draw(){

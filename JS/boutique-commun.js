@@ -1,17 +1,11 @@
 // =====================================================================
-//  Boutique — code partagé entre la boutique du jour et celle du profil
-//  (état du joueur connecté, rendu d'une carte d'article, bouton d'achat,
-//  notifications).
+//  Boutique — code partagé entre la boutique du marchand et celle du profil
+//  (état du joueur connecté, rendu d'une carte d'article, bouton d'achat).
 // =====================================================================
 import { supabase, SITE_ROOT } from './supabase.js';
+import { $, esc, couleur } from './commun.js';
 
-export const $ = (id) => document.getElementById(id);
-
-export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => (
-  { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-));
-
-export const LIBELLES = { banner: 'Bannière', title: 'Titre', theme: 'Thème', rp: 'Objet', wallpaper: 'Fond', access: 'Accès', other: 'Divers' };
+export { $, esc, LIBELLES, notifier } from './commun.js';
 
 // État du joueur, lu par les deux boutiques
 export const etat = {
@@ -39,8 +33,9 @@ export function apercu(item) {
   if (item.kind === 'banner' && p.image) {
     return `<div class="apercu"><img src="${esc(new URL(p.image, SITE_ROOT))}" alt=""></div>`;
   }
-  if (item.kind === 'theme' && p.accent) {
-    return `<div class="apercu apercu--theme" style="--c:${esc(p.accent)}${p.accent2 ? `;--c2:${esc(p.accent2)}` : ''}"></div>`;
+  if (item.kind === 'theme' && couleur(p.accent)) {
+    const c2 = couleur(p.accent2);
+    return `<div class="apercu apercu--theme" style="--c:${p.accent}${c2 ? `;--c2:${c2}` : ''}"></div>`;
   }
   if (item.kind === 'title' && p.text) {
     return `<div class="apercu apercu--titre">« ${esc(p.text)} »</div>`;
@@ -77,12 +72,3 @@ export function boutonAchat(boutique, itemId, prix, bloque) {
   return `<button type="button" class="btn-acheter" data-boutique="${boutique}" data-item="${itemId}">Acheter</button>`;
 }
 
-
-let minuteurNotif;
-export function notifier(message, type = 'ok') {
-  const n = $('notif');
-  n.textContent = message;
-  n.className = `notif notif--${type} notif--visible`;
-  clearTimeout(minuteurNotif);
-  minuteurNotif = setTimeout(() => n.classList.remove('notif--visible'), 4000);
-}

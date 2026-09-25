@@ -4,13 +4,7 @@
 //  profil.html?id=12345  -> profil public d'un autre joueur (ID Discord)
 // =====================================================================
 import { supabase, connexionDiscord, getMonJoueur, SITE_ROOT } from './supabase.js';
-
-const $ = (id) => document.getElementById(id);
-
-// Protège contre l'injection de code quand on insère du texte venant de la base
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => (
-  { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-));
+import { $, esc, couleur, LIBELLES, SOURCES } from './commun.js';
 
 // Le joueur + ses cosmétiques équipés, en une seule requête
 const SELECT_JOUEUR = `
@@ -21,8 +15,6 @@ const SELECT_JOUEUR = `
 `;
 
 const COSMETIQUES = ['banner', 'title', 'theme'];
-const LIBELLES = { banner: 'Bannière', title: 'Titre', theme: 'Thème', rp: 'Objet', wallpaper: 'Fond', access: 'Accès', other: 'Divers' };
-const SOURCES  = { bot: 'En jeu', mj: 'MJ', boutique_jour: 'Boutique du jour', boutique_fun: 'Boutique fun' };
 
 
 async function init() {
@@ -78,11 +70,11 @@ function afficherEntete(j) {
   if (j.banner?.payload?.image) {
     $('banniere').style.backgroundImage = `url("${new URL(j.banner.payload.image, SITE_ROOT)}")`;
   }
-  if (j.theme?.payload?.accent) {
-    const { accent, accent2 } = j.theme.payload;
+  const accent = couleur(j.theme?.payload?.accent);
+  if (accent) {
     document.documentElement.style.setProperty('--accent', accent);
     // Thème à une seule couleur : accent2 reprend accent
-    document.documentElement.style.setProperty('--accent2', accent2 || accent);
+    document.documentElement.style.setProperty('--accent2', couleur(j.theme.payload.accent2) ?? accent);
   }
 }
 

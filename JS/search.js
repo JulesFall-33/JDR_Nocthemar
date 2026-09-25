@@ -44,10 +44,8 @@
   ];
 
   // Calcule le préfixe relatif (racine ou "../") selon la profondeur de la page courante
-  const brandHref = (document.querySelector('.topbar .brand') || {}).getAttribute
-    ? document.querySelector('.topbar .brand').getAttribute('href')
-    : 'index.html';
-  const base = (brandHref || 'index.html').replace(/index\.html$/, '');
+  const brandHref = document.querySelector('.topbar .brand')?.getAttribute('href') || 'index.html';
+  const base = brandHref.replace(/index\.html$/, '');
 
   function norm(s){
     return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
@@ -76,7 +74,11 @@
       return;
     }
     if(!matches.length){
-      results.innerHTML = '<div class="search-empty">Aucun résultat pour « '+query+' ».</div>';
+      // textContent : le texte tapé n'est jamais interprété comme du HTML
+      const vide = document.createElement('div');
+      vide.className = 'search-empty';
+      vide.textContent = 'Aucun résultat pour « ' + query + ' ».';
+      results.appendChild(vide);
       return;
     }
     matches.forEach((m, i) => {

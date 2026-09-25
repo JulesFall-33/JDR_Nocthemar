@@ -1,26 +1,30 @@
 // =====================================================================
-//  Boutique du jour
-//  La sélection (table daily_shop) est générée par le bot Discord :
-//  ici on ne fait que l'afficher et appeler buy_daily_item.
-//  Stock limité, vérifié côté serveur.
+//  Boutique du marchand
+//  La sélection (table daily_shop) est générée par le bot Discord et
+//  renouvelée toutes les 5 h : ici on ne fait que l'afficher et appeler
+//  buy_daily_item. Stock limité, vérifié côté serveur.
 // =====================================================================
 import { supabase } from './supabase.js';
 import { $, esc, LIBELLES, apercu, masquerImagesCassees, boutonAchat } from './boutique-commun.js';
 
-// Date du jour à l'heure de Paris, au format AAAA-MM-JJ (comme dans la base)
-const aujourdhui = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' });
-
 export async function afficherBoutiqueDuJour() {
+  const zone = $('jour');
+
+  // Début du créneau de 5 h en cours, calculé par la base
+  const { data: slot, error: erreurSlot } = await supabase.rpc('current_shop_slot');
+  if (erreurSlot || !slot) {
+    zone.innerHTML = `<p class="vide">Impossible de charger la boutique du marchand.</p>`;
+    return;
+  }
+
   const { data: lignes, error } = await supabase
     .from('daily_shop')
     .select('price, stock, item:items(*)')
-    .eq('day', aujourdhui())
+    .eq('slot', slot)
     .order('price');
 
-  const zone = $('jour');
-
   if (error) {
-    zone.innerHTML = `<p class="vide">Impossible de charger la boutique du jour.</p>`;
+    zone.innerHTML = `<p class="vide">Impossible de charger la boutique du marchand.</p>`;
     return;
   }
   if (!lignes?.length) {
@@ -51,18 +55,40 @@ export function acheterDuJour(itemId) {
   return supabase.rpc('buy_daily_item', { p_item_id: itemId });
 }
 
-// Temps restant avant minuit (heure de Paris)
-export function demarrerCompteARebours() {
+// Temps restant avant le prochain renouvellement (next_shop_refresh, calculé par la base)
+const DELAI_APRES_RENOUVELLEMENT = 5_000; // laisse au bot le temps d'écrire la nouvelle sélection
+let minuteurRebours;
+
+export async function demarrerCompteARebours() {
   const el = $('rebours');
+  clearInterval(minuteurRebours);
+
+  const { data, error } = await supabase.rpc('next_shop_refresh');
+  if (error || !data) {
+    el.textContent = '';
+    return;
+  }
+  const prochain = new Date(data);
+
+  // L'heure vient de Supabase en UTC : on l'affiche en heure de Paris (infobulle)
+  el.title = `Renouvellement à ${prochain.toLocaleTimeString('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit' })} (heure de Paris)`;
+
   const maj = () => {
-    const [h, m, s] = new Date()
-      .toLocaleTimeString('fr-FR', { timeZone: 'Europe/Paris', hour12: false })
-      .split(':').map(Number);
-    const reste = 24 * 3600 - (h * 3600 + m * 60 + s);
+    const reste = Math.max(0, Math.floor((prochain - Date.now()) / 1000));
     const hh = Math.floor(reste / 3600);
     const mm = Math.floor((reste % 3600) / 60);
-    el.textContent = `Nouvelle sélection dans ${hh} h ${String(mm).padStart(2, '0')}`;
+    const ss = reste % 60;
+    el.textContent = `Prochain renouvellement dans ${hh} h ${String(mm).padStart(2, '0')} min ${String(ss).padStart(2, '0')} s`;
+
+    if (reste === 0) {
+      clearInterval(minuteurRebours);
+      el.textContent = 'Le marchand renouvelle son étal…';
+      setTimeout(async () => {
+        await afficherBoutiqueDuJour();
+        demarrerCompteARebours();
+      }, DELAI_APRES_RENOUVELLEMENT);
+    }
   };
   maj();
-  setInterval(maj, 30_000);
+  minuteurRebours = setInterval(maj, 1_000);
 }

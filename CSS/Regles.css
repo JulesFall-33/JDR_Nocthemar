@@ -80,7 +80,7 @@ body::after{
   opacity:0.5;
 }
 
-/* orbes d'ambiance â€” trÃ¨s discrÃ¨tes, coins de l'Ã©cran */
+/* orbes d'ambiance — très discrètes, coins de l'écran */
 .orb{
   position:fixed;
   border-radius:50%;
@@ -237,7 +237,7 @@ h2.title{
   position:relative;
 }
 .sub-divider::after{
-  content:"â¦";
+  content:"¾6";
   position:absolute; top:-0.7em; left:0;
   background:var(--ink);
   padding-right:0.8em;
@@ -312,7 +312,7 @@ footer{
   .topbar{padding:1em 5vw;}
 }
 
-/* ---------- TÃ‰LÃ‰PHONES ---------- */
+/* ---------- TÉLÉPHONES ---------- */
 @media (max-width: 600px){
   body{font-size:16.5px;}
   section{padding:3em 5.5vw;}
