@@ -2,7 +2,7 @@
 --  Informations de la carte du Maître du Jeu (Transcendante), affichées
 --  sur un voile transparent en bas de l'illustration, comme les autres cartes.
 --  Ses attaques ne viennent d'aucune Veine : "destin" (icône 🎲).
---  Rang, noms, effets et puissances sont des propositions, à ajuster librement.
+--  Pas de rang. Noms, effets et puissances sont des propositions, à ajuster librement.
 --
 --  À exécuter dans Supabase > SQL Editor, APRÈS cartes_infos.sql.
 --  Relançable sans problème.
@@ -26,7 +26,7 @@ as $$
 $$;
 
 update public.cards set
-  rank = 1,
+  rank = null,   -- pas de rang : le Maître du Jeu est au-dessus des rangs
   attack_1 = '{"veine": "destin", "nom": "Coup du Sort", "effet": "Relance n''importe quel dé, allié ou ennemi.", "puissance": 99}',
   attack_2 = '{"veine": "destin", "nom": "Plume du Codex", "effet": "Réécrit une règle du monde, le temps d''une scène.", "puissance": "∞"}'
 where name = 'Maître du Jeu';
