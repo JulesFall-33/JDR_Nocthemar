@@ -372,6 +372,46 @@
 .perso__inventaire .stat__liste { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 /* Objets sans cadre, en simple texte */
 .perso__inventaire .stat__liste li { border: none; padding: 4px 0; }
+
+/* Essai : objets en images (nom en infobulle ; texte seulement si l'image manque) */
+.perso__inventaire .stat__liste--images { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.perso__inventaire .stat__liste--images li { padding: 0; }
+.objet-image {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: var(--rayon);
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.objet-image--choisi { border-color: rgba(201,162,74,.5); background: rgba(255,255,255,.04); }
+
+/* Fiche de l'objet cliqué : nom, caractéristiques, description */
+.objet-fiche {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--bord);
+}
+.objet-fiche__nom { font-family: "Cinzel","Cinzel Repli", serif; font-size: 1rem; }
+.objet-fiche__carac { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 6px 0; }
+.objet-fiche__carac dt { display: inline; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-doux); }
+.objet-fiche__carac dd { display: inline; margin: 0 0 0 6px; font-weight: 400; }
+.objet-fiche__desc { margin: 0; font-size: .9rem; font-style: italic; color: var(--texte-doux); }
+.objet-image img {
+  width: 100%;
+  max-width: 60px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.6));
+  transition: transform .15s;
+}
+.objet-image:hover img { transform: scale(1.08); }
+.objet-image__nom { display: none; font-size: .8rem; text-align: center; }
+.objet-image--sans .objet-image__nom { display: block; }
 .perso__inventaire-suite { align-self: center; margin-top: auto; padding-top: 10px; font-size: .85rem; }
 /* Toujours blanc, quel que soit le thème équipé, et même au survol :
    couleur en dur (pas de variable) pour qu'aucun thème ne puisse la modifier */

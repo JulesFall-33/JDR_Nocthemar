@@ -248,6 +248,61 @@ async function afficherPerso(discordId) {
 // Inventaire du personnage : OBJETS_PAR_PAGE objets affichés, un bouton en bas fait défiler les suivants
 const OBJETS_PAR_PAGE = 4;
 
+// Objet affiché en image (img/Equipement/<nom>.webp, apostrophe typographique comme les fichiers),
+// nom en infobulle. Si l'image n'existe pas, on retombe sur le texte.
+function htmlObjetInventaire(nom, choisi) {
+  const src = new URL(`img/Equipement/${nom.replace(/'/g, '’')}.webp`, SITE_ROOT);
+  return `
+    <li>
+      <button type="button" class="objet-image${choisi ? ' objet-image--choisi' : ''}" data-objet="${esc(nom)}"
+              title="${esc(nom)}" aria-pressed="${choisi}">
+        <img src="${esc(src)}" alt="${esc(nom)}" loading="lazy"
+             onerror="this.parentElement.classList.add('objet-image--sans');this.remove()">
+        <span class="objet-image__nom">${esc(nom)}</span>
+      </button>
+    </li>`;
+}
+
+// Fiches des objets (type, catégorie, prix, description), lues une seule fois sur la page
+// Équipement du Codex : une seule source à tenir à jour.
+const cleObjet = (nom) => normaliser(nom).replace(/[’']/g, "'");
+let fichesObjets;
+function chargerFichesObjets() {
+  fichesObjets ??= fetch(new URL('categories/Equipement.html', SITE_ROOT))
+    .then((r) => (r.ok ? r.text() : ''))
+    .then((html) => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const fiches = new Map();
+      for (const ligne of doc.querySelectorAll('.shop-row')) {
+        const nom = ligne.querySelector('.shop-name')?.textContent.trim();
+        if (!nom) continue;
+        fiches.set(cleObjet(nom), {
+          categorie: ligne.closest('section')?.querySelector('.subtitle')?.textContent.trim(),
+          type: ligne.querySelector('.shop-tag')?.textContent.trim(),
+          prix: ligne.querySelector('.shop-price')?.textContent.trim(),
+          description: ligne.querySelector('.shop-desc')?.textContent.trim(),
+        });
+      }
+      return fiches;
+    })
+    .catch(() => new Map());
+  return fichesObjets;
+}
+
+function htmlFicheObjet(nom, fiche) {
+  const carac = [
+    ['Type', fiche?.type],
+    ['Catégorie', fiche?.categorie],
+    ['Prix', fiche?.prix],
+  ].filter(([, v]) => v);
+  return `
+    <div class="objet-fiche">
+      <strong class="objet-fiche__nom">${esc(nom)}</strong>
+      ${carac.length ? `<dl class="objet-fiche__carac">${carac.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>` : ''}
+      <p class="objet-fiche__desc">${fiche?.description ? esc(fiche.description) : 'Aucune description pour cet objet.'}</p>
+    </div>`;
+}
+
 function afficherInventairePerso(cle, val) {
   const objets = (Array.isArray(val) ? val.map(String) : String(val ?? '').split(','))
     .map((v) => v.trim())
@@ -263,21 +318,32 @@ function afficherInventairePerso(cle, val) {
 
   const nbPages = Math.ceil(objets.length / OBJETS_PAR_PAGE);
   let page = 0;
+  let choisi = null;        // objet dont la fiche est ouverte (un clic l'ouvre, un 2e la ferme)
+  let fiches = new Map();
 
   const rendre = () => {
     const debut = page * OBJETS_PAR_PAGE;
     zone.innerHTML = `
       <dt>${esc(cle)}</dt>
-      <dd><ul class="stat__liste">${objets.slice(debut, debut + OBJETS_PAR_PAGE).map((o) => `<li>${esc(o)}</li>`).join('')}</ul></dd>
+      <dd><ul class="stat__liste stat__liste--images">${objets.slice(debut, debut + OBJETS_PAR_PAGE).map((o) => htmlObjetInventaire(o, o === choisi)).join('')}</ul></dd>
+      ${choisi ? htmlFicheObjet(choisi, fiches.get(cleObjet(choisi))) : ''}
       ${nbPages > 1 ? `
         <button type="button" class="btn-petit btn-petit--lien perso__inventaire-suite">
           ${page < nbPages - 1 ? 'Objets suivants ▾' : 'Retour au début ▴'} (${page + 1}/${nbPages})
         </button>` : ''}`;
   };
 
-  zone.onclick = (e) => {
+  zone.onclick = async (e) => {
+    const objet = e.target.closest('[data-objet]');
+    if (objet) {
+      choisi = objet.dataset.objet === choisi ? null : objet.dataset.objet;
+      if (choisi) fiches = await chargerFichesObjets();
+      rendre();
+      return;
+    }
     if (!e.target.closest('.perso__inventaire-suite')) return;
     page = (page + 1) % nbPages;
+    choisi = null;
     rendre();
   };
   rendre();
