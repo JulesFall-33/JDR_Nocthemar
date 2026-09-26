@@ -603,6 +603,53 @@
 .btn-petit--lien { border: none; padding: 0; }
 .btn-petit--lien:hover { background: transparent; color: var(--accent); text-decoration: underline; }
 
+
+/* =====================================================================
+   Essai : profil simplifié (moins de cadres, plus d'air).
+   Pour revenir en arrière, supprimer tout ce bloc (jusqu'à « Fin de l'essai »).
+   ===================================================================== */
+
+/* Plus d'espace entre les grandes sections */
+.page-profil .carte { margin-top: 28px; }
+
+/* Attributs : une seule bande, séparée par de fins traits, au lieu de 6 boîtes */
+.perso__attributs {
+  gap: 0;
+  border-top: 1px solid var(--bord);
+  border-bottom: 1px solid var(--bord);
+}
+.attribut {
+  padding: 8px 4px;
+  border: 0;
+  border-left: 1px solid var(--bord);
+  background: none;
+}
+.attribut:first-child { border-left: 0; }
+.attribut__valeur { font-size: 1.2rem; }
+
+/* CA : valeur simple, sans boîte, alignée avec les barres PV / XP */
+.jauge--badge {
+  min-width: 0;
+  padding: 0 14px 0 0;
+  border: 0;
+  border-right: 1px solid var(--bord);
+  background: none;
+}
+
+/* Champs divers (reliquat) : libellé + valeur, sans cadre arrondi */
+.stats--autres { gap: 12px 20px; }
+.stats--autres .stat { padding: 0; border: 0; border-radius: 0; }
+
+/* Collection / Historique : titres un peu plus discrets que les sections principales */
+#prive .carte h2 { font-size: .9rem; color: var(--texte-doux); }
+
+@media (max-width: 600px) {
+  /* Attributs sur 2 lignes de 3 : trait au-dessus de la 2e ligne, pas à gauche */
+  .attribut:nth-child(4) { border-left: 0; }
+  .attribut:nth-child(n+4) { border-top: 1px solid var(--bord); }
+}
+/* ===================== Fin de l'essai ===================== */
+
 @media (max-width: 600px) {
   .entete__infos { padding-top: 84px; }
   .entete__avatar { width: 72px; height: 72px; }
