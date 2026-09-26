@@ -211,6 +211,10 @@ async function afficherPerso(discordId) {
   // ainsi qu'un éventuel ancien champ Héritage (l'Héritage de Sang n'existe plus dans l'univers)
   ['RACE', 'GENRE', 'NIVEAU', 'HERITAGE'].forEach(trouverCle);
 
+  // Inventaire : sorti de la grille générique pour s'afficher à côté de la bourse
+  const cleInventaire = trouverCle('INVENTAIRE');
+  if (cleInventaire) afficherInventairePerso(cleInventaire, data[cleInventaire]);
+
   // Tout ce qui n'est pas reconnu ci-dessus : affiché tel quel, sans mise en forme spéciale.
   // Une valeur "Objet A, Objet B, Objet C" est éclatée en liste pour rester lisible.
   const autresHtml = [...clesRestantes]
@@ -238,6 +242,45 @@ async function afficherPerso(discordId) {
     ${identiteHtml ? `<div class="perso__identite">${identiteHtml}</div>` : ''}
     ${autresHtml ? `<dl class="stats stats--autres">${autresHtml}</dl>` : ''}
     ${!jaugesHtml && !attributsHtml && !identiteHtml && !autresHtml ? '<p class="vide">Fiche encore vide.</p>' : ''}`;
+}
+
+
+// Inventaire du personnage : OBJETS_PAR_PAGE objets affichés, un bouton en bas fait défiler les suivants
+const OBJETS_PAR_PAGE = 4;
+
+function afficherInventairePerso(cle, val) {
+  const objets = (Array.isArray(val) ? val.map(String) : String(val ?? '').split(','))
+    .map((v) => v.trim())
+    .filter((v) => v && !VIDE_RE.test(v));
+
+  const zone = $('perso-inventaire');
+  zone.hidden = false;
+
+  if (!objets.length) {
+    zone.innerHTML = `<dt>${esc(cle)}</dt><dd class="vide">Inventaire vide.</dd>`;
+    return;
+  }
+
+  const nbPages = Math.ceil(objets.length / OBJETS_PAR_PAGE);
+  let page = 0;
+
+  const rendre = () => {
+    const debut = page * OBJETS_PAR_PAGE;
+    zone.innerHTML = `
+      <dt>${esc(cle)}</dt>
+      <dd><ul class="stat__liste">${objets.slice(debut, debut + OBJETS_PAR_PAGE).map((o) => `<li>${esc(o)}</li>`).join('')}</ul></dd>
+      ${nbPages > 1 ? `
+        <button type="button" class="btn-petit btn-petit--lien perso__inventaire-suite">
+          ${page < nbPages - 1 ? 'Objets suivants ▾' : 'Retour au début ▴'} (${page + 1}/${nbPages})
+        </button>` : ''}`;
+  };
+
+  zone.onclick = (e) => {
+    if (!e.target.closest('.perso__inventaire-suite')) return;
+    page = (page + 1) % nbPages;
+    rendre();
+  };
+  rendre();
 }
 
 

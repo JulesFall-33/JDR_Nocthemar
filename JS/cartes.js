@@ -192,7 +192,7 @@ export class Deck {
     this.zone.innerHTML = `
       <div class="deck-tete">
         <h2 class="deck-nom"></h2>
-        ${this.editable ? '<button type="button" class="btn-petit" data-action="renommer">Renommer</button>' : ''}
+        ${this.editable ? '<button type="button" class="btn-petit btn-petit--lien" data-action="renommer">Renommer</button>' : ''}
       </div>
       <div class="deck-emplacements">${emplacements}</div>`;
     // textContent : un nom de deck ne peut pas injecter de code

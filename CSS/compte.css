@@ -356,16 +356,40 @@
   border: 1px solid var(--bord);
 }
 
-/* Solde (bourse), en bas de la carte "Personnage actif" */
+/* Bas de la carte "Personnage actif" : inventaire à gauche, bourse à droite */
+.perso__bas {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+.perso__bas:not(:has(> :not([hidden]))) { display: none; }
+.perso__inventaire[hidden] { display: none; }
+.perso__inventaire { display: flex; flex-direction: column; }
+/* Annule le ".stat:has(.stat__liste)" pleine largeur, sinon la bourse passe en dessous */
+.perso__bas > .perso__inventaire { grid-column: auto; }
+.perso__bas:has(> .perso__bourse[hidden]) > .perso__inventaire { grid-column: 1 / -1; }
+.perso__inventaire .stat__liste { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.perso__inventaire-suite { align-self: center; margin-top: auto; padding-top: 10px; font-size: .85rem; }
+/* Toujours blanc, quel que soit le thème équipé, et même au survol :
+   couleur en dur (pas de variable) pour qu'aucun thème ne puisse la modifier */
+.perso__inventaire .perso__inventaire-suite,
+.perso__inventaire .perso__inventaire-suite:hover { color: #f2eee6; background: transparent; }
+
+/* Solde (bourse) */
 .perso__bourse {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
-  margin-top: 18px;
   padding: 10px 14px;
   border: 1px solid var(--bord);
+  /* Le cadre épouse son contenu au lieu de remplir la cellule de la grille */
+  align-self: start;
+  justify-self: start;
 }
+/* Bourse seule (pas d'inventaire) : elle prend toute la largeur */
+.perso__inventaire[hidden] + .perso__bourse { grid-column: 1 / -1; }
 .perso__bourse[hidden] { display: none; }
 .perso__bourse-label {
   font-size: .75rem;
@@ -447,10 +471,13 @@
 .btn-petit--equiper:hover { background: var(--texte); color: var(--fond); }
 .btn-petit--retirer { border-color: var(--perte); color: var(--perte); }
 .btn-petit--retirer:hover { background: var(--perte); color: var(--texte); }
+.btn-petit--lien { border: none; padding: 0; }
+.btn-petit--lien:hover { background: transparent; color: var(--accent); text-decoration: underline; }
 
 @media (max-width: 600px) {
   .entete__infos { padding-top: 84px; }
   .entete__avatar { width: 72px; height: 72px; }
   .entete h1 { font-size: 1.3rem; }
   .perso__attributs { grid-template-columns: repeat(3, 1fr); }
+  .perso__bas { grid-template-columns: 1fr; }
 }

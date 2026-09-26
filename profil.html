@@ -70,10 +70,15 @@
         <h2>Personnage actif</h2>
         <div id="perso"></div>
 
-        <!-- Bourse : visible uniquement sur son propre profil -->
-        <div id="bourse" class="perso__bourse" hidden>
-          <span class="perso__bourse-label">Bourse</span>
-          <span class="perso__bourse-valeur"><img class="piece-icone" src="img/Equipement/Or-icone.webp" alt="pièces"> <span id="solde">0</span></span>
+        <div class="perso__bas">
+          <!-- Inventaire du personnage : 4 objets par page -->
+          <div id="perso-inventaire" class="stat perso__inventaire" hidden></div>
+
+          <!-- Bourse : visible uniquement sur son propre profil -->
+          <div id="bourse" class="perso__bourse" hidden>
+            <span class="perso__bourse-label">Bourse</span>
+            <span class="perso__bourse-valeur"><img class="piece-icone" src="img/Equipement/Or-icone.webp" alt="pièces"> <span id="solde">0</span></span>
+          </div>
         </div>
       </section>
 

@@ -431,6 +431,9 @@ tr:hover td{background:rgba(222,210,171,0.02);}
 }
 .cat-tile{
   display:block;
+  /* Un peu plus petite que sa colonne, centrée : image et texte (en cqw) rétrécissent ensemble */
+  width:calc(88% - 2mm);
+  margin-inline:auto;
   aspect-ratio:var(--tile-ratio, 2.9/1);
   background-color:transparent;
   cursor:pointer;

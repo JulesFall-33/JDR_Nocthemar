@@ -234,10 +234,11 @@ body.glisser-actif, body.glisser-actif * { cursor: grabbing !important; }
 .btn-collection {
   display: inline-block;
   margin-top: 16px;
-  padding: 8px 18px;
+  padding: 5px 12px;
   border: 1px solid var(--accent);
   color: var(--accent);
   font-family: "Cinzel","Cinzel Repli", serif;
+  font-size: .8rem;
   letter-spacing: .06em;
   transition: background .15s, color .15s;
 }
@@ -286,10 +287,17 @@ body.glisser-actif, body.glisser-actif * { cursor: grabbing !important; }
   font-size: .7rem;
   line-height: 1;
   cursor: zoom-in;
-  opacity: .75;
+  /* Cachée par défaut : n'apparaît qu'au survol de la carte (deck et collection) */
+  opacity: 0;
+  pointer-events: none;
   transition: opacity .15s, transform .15s;
 }
+:hover > .carte-loupe, .carte-loupe:focus-visible { opacity: .75; pointer-events: auto; }
 .carte-loupe:hover, .carte-loupe:focus-visible { opacity: 1; transform: scale(1.12); }
+/* Écrans tactiles (pas de survol possible) : la loupe reste visible */
+@media (hover: none) {
+  .carte-loupe { opacity: .75; pointer-events: auto; }
+}
 
 .apercu-carte {
   position: fixed;
