@@ -373,7 +373,91 @@ async function afficherSolde(discordId) {
     .eq('discord_id', discordId)
     .maybeSingle();
 
-  $('solde').textContent = (data?.balance ?? 0).toLocaleString('fr-FR');
+  const solde = data?.balance ?? 0;
+  $('solde').textContent = solde.toLocaleString('fr-FR');
+  afficherOrBourse(solde);
+}
+
+
+// Image de la bourse selon le solde : une pièce qui tourne, puis des tas de plus en plus gros.
+// Paliers : [solde minimum, image, nombre d'étincelles] ; le dernier palier atteint l'emporte
+// (au-delà de 1500 : tas 4). Plus on est riche, plus l'or scintille (et plus son halo brille, cf. CSS).
+const PALIERS_OR = [
+  [0,    null,           1],   // pièce qui tourne (animation)
+  [50,   'tas-1-petit',  2],
+  [200,  'tas-2-moyen',  4],
+  [500,  'tas-3-grand',  7],
+  [1500, 'tas-4-enorme', 12],
+];
+const SANS_ETINCELLES_JUSQUA = 10;   // de 0 à 10 pièces : pas d'étincelles
+const imageOr = (nom) => new URL(`img/OR/pieces/${nom}.png`, SITE_ROOT).href;
+
+// Un tour complet : face -> profil, puis les mêmes images en miroir (le revers de la pièce)
+const TOUR_PIECE = [
+  ['piece-face', false], ['piece-rotation-1', false], ['piece-rotation-2', false], ['piece-rotation-3', false],
+  ['piece-rotation-3', true], ['piece-rotation-2', true], ['piece-rotation-1', true], ['piece-face', true],
+  ['piece-rotation-1', false], ['piece-rotation-2', false], ['piece-rotation-3', false],
+  ['piece-rotation-3', true], ['piece-rotation-2', true], ['piece-rotation-1', true],
+];
+const DUREE_IMAGE_PIECE = 280;   // ms par image
+let minuteurPiece;
+
+function afficherOrBourse(solde) {
+  const img = document.querySelector('#bourse .piece-icone');
+  const palier = PALIERS_OR.findLast(([min]) => solde >= min) ?? PALIERS_OR[0];   // solde négatif : pièce
+  const [, tas, nbEtincelles] = palier;
+  clearInterval(minuteurPiece);
+  img.style.transform = '';
+
+  // Bourse vide : une pièce couchée au sol, en noir et blanc
+  const vide = solde <= 0;
+  img.classList.toggle('piece-icone--vide', vide);
+
+  // Richesse (0 = vide ... 5 = tas 4) : règle le halo doré en CSS, et les étincelles
+  $('bourse').dataset.richesse = vide ? 0 : PALIERS_OR.indexOf(palier) + 1;
+  afficherEtincelles(img, solde <= SANS_ETINCELLES_JUSQUA ? 0 : nbEtincelles);
+  if (vide) {
+    img.src = imageOr('piece-couchee-1');
+    return;
+  }
+
+  if (tas) {
+    img.src = imageOr(tas);
+    return;
+  }
+
+  img.src = imageOr('piece-face');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Précharge les images du tour pour que l'animation ne clignote pas
+  for (const nom of new Set(TOUR_PIECE.map(([n]) => n))) new Image().src = imageOr(nom);
+  let i = 0;
+  minuteurPiece = setInterval(() => {
+    i = (i + 1) % TOUR_PIECE.length;
+    const [nom, miroir] = TOUR_PIECE[i];
+    img.src = imageOr(nom);
+    img.style.transform = miroir ? 'scaleX(-1)' : '';
+  }, DUREE_IMAGE_PIECE);
+}
+
+// Étincelles posées au hasard sur l'or, chacune avec son propre rythme pour ne pas
+// scintiller toutes en même temps. Elles occupent la même case que l'image (grid-row 2).
+function afficherEtincelles(img, nombre) {
+  let zone = img.parentElement.querySelector('.bourse-etincelles');
+  if (!zone) {
+    zone = document.createElement('span');
+    zone.className = 'bourse-etincelles';
+    zone.setAttribute('aria-hidden', 'true');
+    img.after(zone);
+  }
+  zone.innerHTML = Array.from({ length: nombre }, () => {
+    const x = 20 + Math.random() * 60;         // % de la largeur de l'or
+    const y = 10 + Math.random() * 75;         // % de la hauteur
+    const taille = 8 + Math.random() * 8;      // px
+    const duree = 1.4 + Math.random() * 1.6;   // s
+    const delai = -Math.random() * duree;      // déjà en cours au chargement
+    return `<span class="etincelle" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;--taille:${taille.toFixed(1)}px;animation-duration:${duree.toFixed(2)}s;animation-delay:${delai.toFixed(2)}s"></span>`;
+  }).join('');
 }
 
 

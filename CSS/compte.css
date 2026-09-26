@@ -365,7 +365,8 @@
 }
 .perso__bas:not(:has(> :not([hidden]))) { display: none; }
 .perso__inventaire[hidden] { display: none; }
-.perso__inventaire { display: flex; flex-direction: column; }
+/* Hauteur de son contenu seulement : ne s'étire pas pour suivre la bourse à côté */
+.perso__inventaire { display: flex; flex-direction: column; align-self: start; }
 /* Annule le ".stat:has(.stat__liste)" pleine largeur, sinon la bourse passe en dessous */
 .perso__bas > .perso__inventaire { grid-column: auto; }
 .perso__bas:has(> .perso__bourse[hidden]) > .perso__inventaire { grid-column: 1 / -1; }
@@ -418,19 +419,22 @@
 .perso__inventaire .perso__inventaire-suite,
 .perso__inventaire .perso__inventaire-suite:hover { color: #f2eee6; background: transparent; }
 
-/* Solde (bourse) */
-.perso__bourse {
+/* Solde (bourse) : suit la hauteur de l'inventaire à côté. Son contenu est en position
+   absolue, donc la bourse ne compte pas dans la hauteur de la rangée : c'est l'inventaire
+   qui la fixe, et la pièce grandit ou rétrécit pour remplir la place. */
+.perso__bourse { position: relative; align-self: stretch; }
+.perso__bourse-contenu {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  padding: 10px 14px;
-  /* Le bloc épouse son contenu au lieu de remplir la cellule de la grille */
-  align-self: start;
-  justify-self: start;
+  align-items: center;
+  gap: 0;
+  padding: 0 14px;   /* rien au-dessus ni en dessous : toute la hauteur va à la pièce */
+  margin-top: -48px; /* « Bourse » remonte à la hauteur de la ligne « Veine », au-dessus de la rangée */
 }
-/* Bourse seule (pas d'inventaire) : elle prend toute la largeur */
-.perso__inventaire[hidden] + .perso__bourse { grid-column: 1 / -1; }
+/* Bourse seule (pas d'inventaire) : toute la largeur, avec une hauteur à elle */
+.perso__inventaire[hidden] + .perso__bourse { grid-column: 1 / -1; min-height: 200px; }
 .perso__bourse[hidden] { display: none; }
 .perso__bourse-label {
   font-size: .75rem;
@@ -444,6 +448,90 @@
   font-weight: 700;
 }
 .perso__bourse-valeur .piece-icone { margin-left: 0; margin-right: 2px; }
+
+/* Essai : grande pièce, avec le solde écrit au-dessus.
+   Nombre en haut, pièce en dessous (dans le HTML la pièce vient en premier) ;
+   la pièce prend toute la hauteur restante. */
+.perso__bourse-valeur {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  justify-items: center;
+  gap: 2px;
+}
+/* Une seule colonne : nombre (ligne 1), or + étincelles superposés (ligne 2) */
+.perso__bourse-valeur { grid-template-columns: 100%; }
+.perso__bourse-valeur #solde { grid-area: 1 / 1; }
+.perso__bourse-valeur .piece-icone {
+  grid-area: 2 / 1;
+  /* Remplit la place restante ; object-fit garde les proportions de chaque image
+     (pièce de face, pièce de profil pendant qu'elle tourne, tas plus larges que hauts) */
+  width: 100%;
+  height: 100%;
+  max-height: 90px;   /* taille maximale de l'or (même si l'inventaire à côté grandit) */
+  object-fit: contain;
+  margin: 14px 0 0;    /* un peu d'espace sous le nombre */
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.6));
+}
+/* Halo doré autour de l'or, de plus en plus fort avec la richesse (data-richesse posé en JS) */
+.perso__bourse-valeur .piece-icone {
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.6)) drop-shadow(0 0 var(--halo-taille, 0px) var(--halo-couleur, transparent));
+}
+#bourse[data-richesse="1"] { --halo-taille: 2px; --halo-couleur: rgba(255,200,90,.15); }
+#bourse[data-richesse="2"] { --halo-taille: 3px; --halo-couleur: rgba(255,200,90,.2); }
+#bourse[data-richesse="3"] { --halo-taille: 4px; --halo-couleur: rgba(255,205,95,.25); }
+#bourse[data-richesse="4"] { --halo-taille: 4px; --halo-couleur: rgba(255,210,100,.2); }
+#bourse[data-richesse="5"] { --halo-taille: 5px; --halo-couleur: rgba(255,215,110,.25); }
+
+/* Étincelles : même case que l'or (2e ligne), posées par-dessus, de la taille de l'or affiché */
+.bourse-etincelles {
+  grid-area: 2 / 1;
+  position: relative;
+  z-index: 1;
+  width: min(100%, 140px);
+  height: 90px;           /* = max-height de l'or */
+  margin-top: 14px;       /* = marge au-dessus de l'or */
+  pointer-events: none;
+}
+.etincelle {
+  position: absolute;
+  width: var(--taille);
+  height: var(--taille);
+  translate: -50% -50%;
+  background: radial-gradient(circle, #fffbe8 0%, #ffe08a 40%, #f5b93a 75%);
+  /* Étoile à 4 branches */
+  clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+  filter: drop-shadow(0 0 3px rgba(255,230,150,.9));
+  opacity: 0;
+  animation: etincelle ease-in-out infinite;
+}
+@keyframes etincelle {
+  0%, 100% { opacity: 0; transform: scale(.2) rotate(0deg); }
+  45%      { opacity: 1; transform: scale(1) rotate(45deg); }
+  60%      { opacity: .9; transform: scale(.9) rotate(60deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .etincelle { animation: none; opacity: .8; transform: none; }
+}
+
+/* Bourse vide (0 pièce) : pièce en noir et blanc, un peu éteinte */
+.perso__bourse-valeur .piece-icone--vide {
+  filter: grayscale(1) brightness(.75) drop-shadow(0 4px 8px rgba(0,0,0,.6));
+  opacity: .7;
+  max-width: 110px;  /* pièce couchée : plus large que haute, on la garde petite */
+}
+.perso__bourse-valeur #solde {
+  /* Au-dessus de la pièce : son "filter" la ferait sinon passer devant le nombre */
+  position: relative;
+  z-index: 1;
+  font-size: 1.9rem;
+  line-height: 1.1;
+  margin-top: 6px;   /* un peu plus bas que « Bourse » */
+  color: #fff6de;
+  text-shadow: 0 0 4px #000, 0 0 8px #000, 0 1px 2px #000;
+}
 .piece-icone {
   width: 1em;
   height: 1em;
@@ -521,4 +609,6 @@
   .entete h1 { font-size: 1.3rem; }
   .perso__attributs { grid-template-columns: repeat(3, 1fr); }
   .perso__bas { grid-template-columns: 1fr; }
+  /* Empilée sous l'inventaire : plus rien à suivre, la bourse a sa propre hauteur */
+  .perso__bourse { min-height: 200px; }
 }
