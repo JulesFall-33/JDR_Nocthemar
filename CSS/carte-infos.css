@@ -161,6 +161,9 @@
   .carte-infos__nom { max-width: 100%; font-size: 5cqw; }
   .carte-infos__rang { font-size: 5cqw; }
   .carte-infos__attaques { display: none; }
-  .carte-infos__rarete { font-size: 4cqw; letter-spacing: .06em; margin-top: 2cqw; }
+  /* Nom (+ rang) centrés dans l'espace libre ; rareté toujours au même endroit, en bas,
+     qu'il y ait un rang ou non */
+  .carte-infos__tete { margin-block: auto; }
+  .carte-infos__rarete { font-size: 4cqw; letter-spacing: .06em; transform: none; padding-bottom: 1.4cqw; }
   .carte-infos__gemme { width: 3cqw; height: 3cqw; }
 }
