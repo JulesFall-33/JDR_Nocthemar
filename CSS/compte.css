@@ -370,6 +370,8 @@
 .perso__bas > .perso__inventaire { grid-column: auto; }
 .perso__bas:has(> .perso__bourse[hidden]) > .perso__inventaire { grid-column: 1 / -1; }
 .perso__inventaire .stat__liste { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Objets sans cadre, en simple texte */
+.perso__inventaire .stat__liste li { border: none; padding: 4px 0; }
 .perso__inventaire-suite { align-self: center; margin-top: auto; padding-top: 10px; font-size: .85rem; }
 /* Toujours blanc, quel que soit le thème équipé, et même au survol :
    couleur en dur (pas de variable) pour qu'aucun thème ne puisse la modifier */
@@ -383,8 +385,7 @@
   align-items: flex-start;
   gap: 4px;
   padding: 10px 14px;
-  border: 1px solid var(--bord);
-  /* Le cadre épouse son contenu au lieu de remplir la cellule de la grille */
+  /* Le bloc épouse son contenu au lieu de remplir la cellule de la grille */
   align-self: start;
   justify-self: start;
 }
