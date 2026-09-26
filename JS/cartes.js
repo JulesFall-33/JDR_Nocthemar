@@ -29,17 +29,19 @@ export const VEINES = {
   forge:   ['Veine de la Forge', '⚒️'],   maree:  ['Veine de la Marée', '🌊'],
   racine:  ['Veine de la Racine', '🌿'],  esprit: ['Veine de l’Esprit', '🕯️'],
   ombre:   ['Veine de l’Ombre', '🌑'],    chaine: ['Veine de la Chaîne', '⛓️'],
+  // Hors Veines : pouvoirs du Maître du Jeu
+  destin:  ['Pouvoir du Destin', '🎲'],
 };
 const RANGS = ['', 'I', 'II', 'III', 'IV', 'V'];   // Rang I = le plus puissant
 
 const attaquesDe = (carte) => [carte.attack_1, carte.attack_2].filter((a) => a?.nom);
 
 // Informations écrites dans le cadre noir du bas de la carte (nom, rang, attaques, rareté),
-// à la manière d'une carte Pokémon. Seulement pour les cartes qui ont un rang ou des attaques
-// (le Maître du Jeu, illustration pleine carte, n'en a pas).
+// à la manière d'une carte Pokémon. Seulement pour les cartes qui ont un rang ou des attaques,
+// et pour les Transcendantes (illustration pleine carte, sans cadre noir : fond léger à la place).
 export function htmlInfos(carte, rarete = RARETES[carte.rarity] ? carte.rarity : 'commune') {
   const attaques = attaquesDe(carte);
-  if (!carte.rank && !attaques.length) return '';
+  if (!carte.rank && !attaques.length && rarete !== 'transcendante') return '';
 
   const lignes = attaques.map((a) => {
     const [veine, icone] = VEINES[a.veine] ?? ['Veine inconnue', '✦'];

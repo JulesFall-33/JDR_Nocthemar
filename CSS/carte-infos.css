@@ -26,7 +26,8 @@
   left: 14.5%;
   right: 14.5%;
   top: 68.4%;
-  height: 17.4%;
+  /* Descend jusqu'au bas du cadre noir : la rareté (en pied) se place plus bas */
+  height: 19.4%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,6 +38,21 @@
   line-height: 1.15;
   text-align: left;
   pointer-events: none;
+}
+
+/* Transcendante : pas de cadre noir dans l'illustration, un voile sombre léger et
+   transparent garde le texte lisible sans cacher l'image */
+.carte-infos--transcendante {
+  top: auto;
+  bottom: 13%;
+  height: auto;
+  min-height: 11%;
+  gap: .8cqw;
+  padding: 1.4cqw 2.4cqw;
+  border: 1px solid rgba(201,162,74,.35);
+  border-radius: 1.6cqw;
+  background: linear-gradient(to bottom, rgba(12,9,6,.35), rgba(12,9,6,.55));
+  backdrop-filter: blur(2px);
 }
 
 .carte-infos__tete {
@@ -115,6 +131,8 @@
   text-transform: uppercase;
   color: var(--rarete);
   filter: brightness(1.35);
+  /* Un peu plus bas, vers le bord du cadre noir (reste dans la marge du bas) */
+  transform: translateY(.6cqw);
 }
 .carte-infos__gemme {
   width: 1.9cqw;
@@ -143,6 +161,6 @@
   .carte-infos__nom { max-width: 100%; font-size: 5cqw; }
   .carte-infos__rang { font-size: 5cqw; }
   .carte-infos__attaques { display: none; }
-  .carte-infos__rarete { font-size: 4cqw; letter-spacing: .06em; }
+  .carte-infos__rarete { font-size: 4cqw; letter-spacing: .06em; margin-top: 2cqw; }
   .carte-infos__gemme { width: 3cqw; height: 3cqw; }
 }

@@ -26,7 +26,8 @@ as $$
   select a is null or (
     jsonb_typeof(a) = 'object'
     and a->>'veine' in ('sang', 'trone', 'regard', 'reve', 'tombeau', 'bete',
-                        'forge', 'maree', 'racine', 'esprit', 'ombre', 'chaine')
+                        'forge', 'maree', 'racine', 'esprit', 'ombre', 'chaine',
+                        'destin')   -- destin : hors Veines, pouvoirs du Maître du Jeu
     and coalesce(btrim(a->>'nom'), '') <> ''
     and (a->'puissance' is null or jsonb_typeof(a->'puissance') in ('number', 'string', 'null'))
   );
