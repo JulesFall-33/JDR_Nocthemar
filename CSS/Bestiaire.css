@@ -335,13 +335,110 @@ footer{
   display:flex; flex-wrap:wrap; gap:1.4em;
   margin-top:1.8em; font-family:"Cinzel", "Cinzel Repli", serif; font-size:0.78em; letter-spacing:0.04em;
 }
-.beast-table td.host-red{ color:var(--blood); font-weight:500; }
-.beast-table td.host-orange{ color:#c8793a; font-weight:500; }
-.beast-table td.host-yellow{ color:#c2a13a; font-weight:500; }
-.beast-table td.host-green{ color:var(--verdigris); font-weight:500; }
-.beast-table .beast-desc{ font-size:0.92em; max-width:42ch; }
-.beast-table th, .beast-table td{ vertical-align:top; }
-@media (max-width:700px){
-  .beast-table{ font-size:0.82em; }
+
+/* Couleur de chaque niveau d'hostilité (réutilisée par les titres et les fiches) */
+.host-red    { --host:var(--blood); }
+.host-orange { --host:#c8793a; }
+.host-yellow { --host:#c2a13a; }
+.host-green  { --host:var(--verdigris); }
+.host-legend span{ color:var(--host); }
+
+/* Accès rapide aux 4 catégories */
+.beast-nav{
+  display:flex; flex-wrap:wrap; gap:0.7em;
+  margin-top:2.2em;
+}
+.beast-nav a{
+  display:inline-flex; align-items:center; gap:0.5em;
+  padding:0.55em 1.1em;
+  border:1px solid var(--line-strong);
+  font-family:"Cinzel","Cinzel Repli", serif; font-size:0.8em; letter-spacing:0.05em;
+  color:var(--parchment-dim);
+  transition:border-color .15s ease, color .15s ease;
+}
+.beast-nav a:hover{ border-color:var(--blood); color:var(--parchment); }
+.beast-nav small{ color:var(--parchment-faint); font-size:0.85em; }
+
+.beast-note{
+  margin-top:1.8em;
+  font-size:0.92em;
+  color:var(--parchment-faint);
+  max-width:70ch;
+}
+.beast-note strong{ color:var(--parchment-dim); font-weight:500; }
+
+/* Ancre : la barre du haut (sticky) ne cache pas le titre de la catégorie */
+#terrestres, #volants, #aquatiques, #insectes{ scroll-margin-top:4em; }
+
+/* Titre d'un groupe d'hostilité dans une catégorie */
+.host-group{
+  display:flex; align-items:center; gap:0.6em;
+  margin:2.6em 0 1.1em;
+  padding-bottom:0.5em;
+  border-bottom:1px solid var(--line);
+  font-size:1em; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--host);
+}
+.host-group small{ color:var(--parchment-faint); font-size:0.8em; letter-spacing:0; }
+
+/* Grille de fiches */
+.beast-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:1.1em;
+}
+
+/* Fiche d'une créature : liseré de la couleur de son hostilité à gauche */
+.beast{
+  display:flex; flex-direction:column; gap:0.55em;
+  padding:1.1em 1.2em 1.2em;
+  background:var(--ink-2);
+  border:1px solid var(--line);
+  border-left:3px solid var(--host);
+  transition:border-color .15s ease, transform .15s ease;
+}
+.beast:hover{ border-color:var(--line-strong); border-left-color:var(--host); transform:translateY(-2px); }
+
+.beast-head{ display:flex; align-items:baseline; justify-content:space-between; gap:0.8em; flex-wrap:wrap; }
+.beast-name{ font-size:1.1em; line-height:1.25; }
+.beast-host{
+  font-family:"Cinzel","Cinzel Repli", serif; font-size:0.66em; letter-spacing:0.04em;
+  color:var(--host); white-space:nowrap;
+}
+.beast-type{ margin:-0.35em 0 0; font-size:0.88em; font-style:italic; color:var(--parchment-faint); }
+
+/* PV et dégâts, bien visibles */
+.beast-stats{
+  display:grid; grid-template-columns:1fr 1fr;
+  margin:0.2em 0 0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.beast-stats > div{ padding:0.45em 0; }
+.beast-stats > div + div{ padding-left:0.9em; border-left:1px solid var(--line); }
+.beast-stats dt{
+  font-family:"Cinzel","Cinzel Repli", serif; font-size:0.66em; letter-spacing:0.1em;
+  color:var(--parchment-faint);
+}
+.beast-stats dd{
+  margin:0;
+  font-family:"Cinzel","Cinzel Repli", serif; font-size:1.15em; font-weight:600;
+  color:var(--parchment);
+}
+.beast-stats dd small{ font-family:"EB Garamond","EB Garamond Repli", serif; font-size:0.62em; font-weight:400; color:var(--parchment-faint); }
+
+.beast-desc{ margin:0; font-size:0.92em; line-height:1.55; color:var(--parchment-dim); }
+.beast-zones{
+  display:flex; gap:0.5em;
+  margin:auto 0 0;          /* toujours en bas de la fiche */
+  padding-top:0.4em;
+  font-size:0.84em; line-height:1.45;
+  color:var(--parchment-faint);
+}
+.beast-zones span{ flex:none; }
+
+@media (max-width:600px){
+  .beast-grid{ grid-template-columns:1fr; }
+  .beast-nav a{ font-size:0.72em; padding:0.5em 0.85em; }
 }
 
