@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aquatiques — Bestiaire — Nocthémar</title>
+<link rel="icon" type="image/png" href="../img/Logo/Nocthemar_logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../CSS/polices.css">
+<link rel="stylesheet" href="../CSS/Bestiaire.css">
+<link rel="stylesheet" href="../CSS/search.css">
+<link rel="stylesheet" href="../CSS/compte.css">
+</head>
+<body>
+<canvas id="embers"></canvas>
+<div class="orb orb-white"></div>
+<div class="orb orb-white-2"></div>
+<div class="orb orb-red"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">Nocthémar</a>
+  <span class="brand-sub">Codex de l'univers JDR</span>
+  <span class="crumb">/ <a href="../categories/Bestiaire.html" style="color:inherit;">Bestiaire</a> / <span class="cur">Aquatiques</span></span>
+  <div class="search-wrap">
+    <button class="nav-search" id="searchToggle" aria-label="Rechercher">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <div class="search-panel" id="searchPanel">
+      <input type="text" id="searchInput" placeholder="Rechercher dans le Codex…" autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </div>
+  <a href="../boutique.html" class="nav-boutique">Boutique</a>
+  <div id="discord-auth"></div>
+  <a class="back" href="../categories/Bestiaire.html">← Bestiaire</a>
+</header>
+
+<main>
+
+  <section id="aquatiques">
+    <div class="kicker"><span class="num">🌊</span>Bestiaire</div>
+    <h2 class="title">Aquatiques</h2>
+
+    <div class="host-legend">
+      <span class="host-red">🔴 Hostile</span>
+      <span class="host-orange">🟠 Territorial / Méfiant</span>
+      <span class="host-yellow">🟡 Territorial</span>
+      <span class="host-green">🟢 Neutre</span>
+    </div>
+
+    <nav class="beast-nav" aria-label="Catégories du bestiaire">
+      <a href="Terrestres.html"><span>🌲</span>Terrestres <small>27</small></a>
+      <a href="Volants.html"><span>🪽</span>Volants <small>14</small></a>
+      <a href="Aquatiques.html" class="cur" aria-current="page"><span>🌊</span>Aquatiques <small>14</small></a>
+      <a href="Insectes.html"><span>🐝</span>Petites créatures &amp; insectes <small>9</small></a>
+    </nav>
+
+    <p class="beast-note">Les <strong>PV</strong> et les <strong>dégâts</strong> sont des valeurs de référence pour une créature adulte ordinaire : le MJ reste libre de les ajuster. Un « — » signifie que la créature n'inflige pas de dégâts notables. Les <strong>zones</strong> indiquent où la créature est le plus souvent rencontrée, même si on peut parfois la croiser ailleurs.</p>
+
+    <h4 class="host-group host-red">🔴 Hostiles <small>1</small></h4>
+    <div class="beast-grid">
+      <article class="beast host-red">
+        <header class="beast-head"><h4 class="beast-name">Megalodon</h4><span class="beast-host">🔴 Hostile</span></header>
+        <p class="beast-type">Otodontidae</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>180</dd></div><div><dt>Dégâts</dt><dd>4d10 + 6</dd></div></dl>
+        <p class="beast-desc">Énorme requin très violent et rapide qui peut tuer une proie très rapidement.</p>
+        <p class="beast-zones"><span>📍</span>Haute mer · mer de Mirage · routes maritimes lointaines</p>
+      </article>
+    </div>
+
+    <h4 class="host-group host-green">🟢 Neutres <small>13</small></h4>
+    <div class="beast-grid">
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Dos-de-vase</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Amphibien géant</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>60</dd></div><div><dt>Dégâts</dt><dd>2d8 + 2</dd></div></dl>
+        <p class="beast-desc">Énorme amphibien passant presque toute sa vie au fond des lacs.</p>
+        <p class="beast-zones"><span>📍</span>Lacs profonds · grands marais</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Grenouille cloche</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Amphibien</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>2</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Grosse grenouille dont le chant résonne comme une cloche.</p>
+        <p class="beast-zones"><span>📍</span>Étangs · marais · mares des sous-bois</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Dauphin</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Mammifère marin</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>20</dd></div><div><dt>Dégâts</dt><dd>1d6</dd></div></dl>
+        <p class="beast-desc">Mammifère marin vivant en groupes.</p>
+        <p class="beast-zones"><span>📍</span>Côtes · baies · haute mer</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Phoque</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Mammifère marin</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>15</dd></div><div><dt>Dégâts</dt><dd>1d6</dd></div></dl>
+        <p class="beast-desc">Mammifère marin fréquent sur certaines côtes.</p>
+        <p class="beast-zones"><span>📍</span>Côtes rocheuses · banquises d'Erynedhal</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Poisson</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Animal aquatique</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Nombreuses espèces de petits poissons vivant en bancs.</p>
+        <p class="beast-zones"><span>📍</span>Mers · lacs · rivières</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Méduse</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Créature marine</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>1d4</dd></div></dl>
+        <p class="beast-desc">Créature marine commune près des côtes. Certaines espèces sont urticantes.</p>
+        <p class="beast-zones"><span>📍</span>Côtes · baies abritées · eaux chaudes</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Huître</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Mollusque</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Coquillage fixé aux rochers et aux fonds marins.</p>
+        <p class="beast-zones"><span>📍</span>Rochers côtiers · estuaires · fonds marins peu profonds</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Carpe</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Poisson</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Poisson commun des étangs et des rivières lentes, souvent élevé par les habitants.</p>
+        <p class="beast-zones"><span>📍</span>Étangs · viviers · rivières lentes</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Truite</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Poisson</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Poisson vivant dans les rivières fraîches et rapides.</p>
+        <p class="beast-zones"><span>📍</span>Torrents · rivières de montagne</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Anguille</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Poisson</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>2</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Poisson serpentiforme vivant dans les rivières et les eaux stagnantes.</p>
+        <p class="beast-zones"><span>📍</span>Rivières · eaux stagnantes · marais</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Écrevisse</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Crustacé</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>1</dd></div></dl>
+        <p class="beast-desc">Petit crustacé vivant dans les rivières et les étangs.</p>
+        <p class="beast-zones"><span>📍</span>Rivières claires · étangs</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Tortue de rivière</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Reptile aquatique</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>4</dd></div><div><dt>Dégâts</dt><dd>1d2</dd></div></dl>
+        <p class="beast-desc">Petite tortue vivant dans les eaux calmes et se chauffant au soleil sur les troncs.</p>
+        <p class="beast-zones"><span>📍</span>Eaux calmes · berges ensoleillées · étangs</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Loutre</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Mammifère aquatique</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>4</dd></div><div><dt>Dégâts</dt><dd>1d3</dd></div></dl>
+        <p class="beast-desc">Animal joueur et agile vivant près des rivières.</p>
+        <p class="beast-zones"><span>📍</span>Berges des rivières · lacs</p>
+      </article>
+    </div>
+  </section>
+
+  <footer>Codex du Monde</footer>
+</main>
+
+<script src="../JS/embers.js"></script>
+<script src="../JS/search.js"></script>
+<script src="../JS/dice.js"></script>
+<script src="../JS/card-tilt.js"></script>
+<script type="module" src="../JS/auth.js"></script>
+</body>
+</html>

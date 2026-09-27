@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volants — Bestiaire — Nocthémar</title>
+<link rel="icon" type="image/png" href="../img/Logo/Nocthemar_logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../CSS/polices.css">
+<link rel="stylesheet" href="../CSS/Bestiaire.css">
+<link rel="stylesheet" href="../CSS/search.css">
+<link rel="stylesheet" href="../CSS/compte.css">
+</head>
+<body>
+<canvas id="embers"></canvas>
+<div class="orb orb-white"></div>
+<div class="orb orb-white-2"></div>
+<div class="orb orb-red"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">Nocthémar</a>
+  <span class="brand-sub">Codex de l'univers JDR</span>
+  <span class="crumb">/ <a href="../categories/Bestiaire.html" style="color:inherit;">Bestiaire</a> / <span class="cur">Volants</span></span>
+  <div class="search-wrap">
+    <button class="nav-search" id="searchToggle" aria-label="Rechercher">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <div class="search-panel" id="searchPanel">
+      <input type="text" id="searchInput" placeholder="Rechercher dans le Codex…" autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </div>
+  <a href="../boutique.html" class="nav-boutique">Boutique</a>
+  <div id="discord-auth"></div>
+  <a class="back" href="../categories/Bestiaire.html">← Bestiaire</a>
+</header>
+
+<main>
+
+  <section id="volants">
+    <div class="kicker"><span class="num">🪽</span>Bestiaire</div>
+    <h2 class="title">Volants</h2>
+
+    <div class="host-legend">
+      <span class="host-red">🔴 Hostile</span>
+      <span class="host-orange">🟠 Territorial / Méfiant</span>
+      <span class="host-yellow">🟡 Territorial</span>
+      <span class="host-green">🟢 Neutre</span>
+    </div>
+
+    <nav class="beast-nav" aria-label="Catégories du bestiaire">
+      <a href="Terrestres.html"><span>🌲</span>Terrestres <small>27</small></a>
+      <a href="Volants.html" class="cur" aria-current="page"><span>🪽</span>Volants <small>14</small></a>
+      <a href="Aquatiques.html"><span>🌊</span>Aquatiques <small>14</small></a>
+      <a href="Insectes.html"><span>🐝</span>Petites créatures &amp; insectes <small>9</small></a>
+    </nav>
+
+    <p class="beast-note">Les <strong>PV</strong> et les <strong>dégâts</strong> sont des valeurs de référence pour une créature adulte ordinaire : le MJ reste libre de les ajuster. Un « — » signifie que la créature n'inflige pas de dégâts notables. Les <strong>zones</strong> indiquent où la créature est le plus souvent rencontrée, même si on peut parfois la croiser ailleurs.</p>
+
+    <h4 class="host-group host-red">🔴 Hostiles <small>1</small></h4>
+    <div class="beast-grid">
+      <article class="beast host-red">
+        <header class="beast-head"><h4 class="beast-name">Wyverne</h4><span class="beast-host">🔴 Hostile</span></header>
+        <p class="beast-type">Dragon / Reptile volant</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>110</dd></div><div><dt>Dégâts</dt><dd>2d8 + 4</dd></div></dl>
+        <p class="beast-desc">Reptile volant existant en plusieurs tailles et variantes : sang, feu, sable et neige.</p>
+        <p class="beast-zones"><span>📍</span>Selon la variante — sang : Vharos · feu : volcans et pics d'Aelkor · sable : déserts · neige : Erynedhal</p>
+      </article>
+    </div>
+
+    <h4 class="host-group host-orange">🟠 Territoriaux &amp; méfiants <small>1</small></h4>
+    <div class="beast-grid">
+      <article class="beast host-orange">
+        <header class="beast-head"><h4 class="beast-name">Aigle géant</h4><span class="beast-host">🟠 Conditionnellement hostile</span></header>
+        <p class="beast-type">Oiseau / Prédateur</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>26</dd></div><div><dt>Dégâts</dt><dd>2d6 + 3</dd></div></dl>
+        <p class="beast-desc">Immense rapace capable d'emporter un enfant ou d'attaquer un cavalier.</p>
+        <p class="beast-zones"><span>📍</span>Pics et falaises d'Aelkor · cols de montagne</p>
+      </article>
+    </div>
+
+    <h4 class="host-group host-yellow">🟡 Territoriaux <small>1</small></h4>
+    <div class="beast-grid">
+      <article class="beast host-yellow">
+        <header class="beast-head"><h4 class="beast-name">Oie</h4><span class="beast-host">🟡 Territorial</span></header>
+        <p class="beast-type">Volaille domestique</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>3</dd></div><div><dt>Dégâts</dt><dd>1d2</dd></div></dl>
+        <p class="beast-desc">Oiseau de ferme bruyant servant parfois d'alarme lorsqu'un inconnu approche.</p>
+        <p class="beast-zones"><span>📍</span>Fermes · étangs de village</p>
+      </article>
+    </div>
+
+    <h4 class="host-group host-green">🟢 Neutres <small>11</small></h4>
+    <div class="beast-grid">
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Aigle royal</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Oiseau / Prédateur</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>6</dd></div><div><dt>Dégâts</dt><dd>1d4 + 1</dd></div></dl>
+        <p class="beast-desc">Grand rapace évitant généralement les humains.</p>
+        <p class="beast-zones"><span>📍</span>Montagnes · falaises · hauts plateaux</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Corbeau</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Oiseau</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>1</dd></div></dl>
+        <p class="beast-desc">Intelligent, charognard et parfois dressé comme messager.</p>
+        <p class="beast-zones"><span>📍</span>Champs · cimetières · champs de bataille · villes</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Cigogne</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Oiseau migrateur</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>3</dd></div><div><dt>Dégâts</dt><dd>1d2</dd></div></dl>
+        <p class="beast-desc">Grand oiseau migrateur nichant sur les toits et les clochers.</p>
+        <p class="beast-zones"><span>📍</span>Toits et clochers des villages · prairies humides (à la belle saison)</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Héron</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Oiseau</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>3</dd></div><div><dt>Dégâts</dt><dd>1d3</dd></div></dl>
+        <p class="beast-desc">Grand oiseau des rivières, lacs et marais.</p>
+        <p class="beast-zones"><span>📍</span>Rivières · lacs · marais</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Canard</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Oiseau aquatique</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>2</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Très commun autour des fermes et des étangs.</p>
+        <p class="beast-zones"><span>📍</span>Étangs · fermes · rivières lentes</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Moineau</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Petit oiseau</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Petit oiseau très commun vivant autour des habitations.</p>
+        <p class="beast-zones"><span>📍</span>Villes · villages · fermes</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Hirondelle</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Petit oiseau</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Oiseau migrateur rapide nichant souvent sous les toits.</p>
+        <p class="beast-zones"><span>📍</span>Sous les toits des villages · granges (à la belle saison)</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Chouette</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Oiseau nocturne</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>2</dd></div><div><dt>Dégâts</dt><dd>1d2</dd></div></dl>
+        <p class="beast-desc">Rapace nocturne vivant dans les forêts et les vieilles granges.</p>
+        <p class="beast-zones"><span>📍</span>Forêts · vieilles granges · ruines</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Pie</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Oiseau</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Oiseau curieux attiré par les objets brillants. Certaines pies semblent étonnamment douées pour reconnaître les personnes.</p>
+        <p class="beast-zones"><span>📍</span>Campagnes · vergers · abords des villes</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Pigeon</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Oiseau domestique</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Très commun dans les villes. Certaines villes utilisent des pigeons dressés pour transmettre de petits messages.</p>
+        <p class="beast-zones"><span>📍</span>Villes · pigeonniers · places de marché</p>
+      </article>
+      <article class="beast host-green">
+        <header class="beast-head"><h4 class="beast-name">Poulet</h4><span class="beast-host">🟢 Neutre</span></header>
+        <p class="beast-type">Volaille domestique</p>
+        <dl class="beast-stats"><div><dt>PV</dt><dd>1</dd></div><div><dt>Dégâts</dt><dd>—</dd></div></dl>
+        <p class="beast-desc">Élevé pour ses œufs et sa viande.</p>
+        <p class="beast-zones"><span>📍</span>Fermes · basses-cours · villages</p>
+      </article>
+    </div>
+  </section>
+
+  <footer>Codex du Monde</footer>
+</main>
+
+<script src="../JS/embers.js"></script>
+<script src="../JS/search.js"></script>
+<script src="../JS/dice.js"></script>
+<script src="../JS/card-tilt.js"></script>
+<script type="module" src="../JS/auth.js"></script>
+</body>
+</html>

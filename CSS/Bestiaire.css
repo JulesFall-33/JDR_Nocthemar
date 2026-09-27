@@ -357,6 +357,9 @@ footer{
   transition:border-color .15s ease, color .15s ease;
 }
 .beast-nav a:hover{ border-color:var(--blood); color:var(--parchment); }
+/* Catégorie de la page courante */
+.beast-nav a.cur{ border-color:var(--blood); color:var(--parchment); background:rgba(194,47,56,0.12); }
+.beast-nav a.cur{ border-color:var(--blood); color:var(--parchment); background:rgba(139,26,26,0.12); }
 .beast-nav small{ color:var(--parchment-faint); font-size:0.85em; }
 
 .beast-note{
@@ -367,7 +370,7 @@ footer{
 }
 .beast-note strong{ color:var(--parchment-dim); font-weight:500; }
 
-/* Ancre : la barre du haut (sticky) ne cache pas le titre de la catégorie */
+/* Ancre (anciens liens #terrestres…) : la barre du haut (sticky) ne cache pas le titre */
 #terrestres, #volants, #aquatiques, #insectes{ scroll-margin-top:4em; }
 
 /* Titre d'un groupe d'hostilité dans une catégorie */
@@ -442,3 +445,161 @@ footer{
   .beast-nav a{ font-size:0.72em; padding:0.5em 0.85em; }
 }
 
+
+/* ---------- ACCUEIL DU BESTIAIRE : cartes des catégories ---------- */
+.realm-terre   { --realm:#8fae68; --realm-deep:rgba(92,128,58,0.30); }
+.realm-air     { --realm:#a9c2d8; --realm-deep:rgba(96,132,168,0.30); }
+.realm-eau     { --realm:#5fa7c2; --realm-deep:rgba(40,110,140,0.32); }
+.realm-insecte { --realm:#d4ab52; --realm-deep:rgba(170,120,40,0.30); }
+
+.realms{
+  display:grid; grid-template-columns:repeat(2, 1fr); gap:1.4em;
+  margin-top:1em;
+}
+.realm{
+  position:relative; overflow:hidden; isolation:isolate;
+  display:flex; flex-direction:column;
+  min-height:19em;
+  padding:2em 2.1em 1.7em;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(120% 90% at 100% 0%, var(--realm-deep), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.025), rgba(0,0,0,0.25)),
+    var(--ink-2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 30px rgba(0,0,0,0.35);
+  transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .3s ease, box-shadow .35s ease;
+  opacity:0; animation:realmIn .6s cubic-bezier(.2,.7,.2,1) forwards;
+}
+.realm:nth-child(2){ animation-delay:.08s; }
+.realm:nth-child(3){ animation-delay:.16s; }
+.realm:nth-child(4){ animation-delay:.24s; }
+@keyframes realmIn{
+  from{ opacity:0; transform:translateY(14px); }
+  to{ opacity:1; transform:none; }
+}
+/* Liseré coloré en haut de la carte */
+.realm::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--realm), transparent);
+  opacity:.55; transition:opacity .3s ease;
+}
+/* Coins ornementaux */
+.realm::after{
+  content:""; position:absolute; inset:8px; pointer-events:none;
+  border:1px solid transparent;
+  background:
+    linear-gradient(var(--realm),var(--realm)) top left / 14px 1px no-repeat,
+    linear-gradient(var(--realm),var(--realm)) top left / 1px 14px no-repeat,
+    linear-gradient(var(--realm),var(--realm)) bottom right / 14px 1px no-repeat,
+    linear-gradient(var(--realm),var(--realm)) bottom right / 1px 14px no-repeat;
+  opacity:.35; transition:opacity .3s ease, inset .3s ease;
+}
+.realm:hover, .realm:focus-visible{
+  transform:translateY(-5px);
+  border-color:color-mix(in srgb, var(--realm) 55%, transparent);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05), 0 18px 40px rgba(0,0,0,0.5), 0 0 40px -10px var(--realm-deep);
+  outline:none;
+}
+.realm:hover::before, .realm:focus-visible::before{ opacity:1; }
+.realm:hover::after, .realm:focus-visible::after{ opacity:.8; inset:6px; }
+
+/* Grand emblème en filigrane */
+.realm-mark{
+  position:absolute; z-index:-1; right:-1.2em; bottom:-1.4em;
+  width:13em; height:13em;
+  fill:none; stroke:var(--realm); stroke-width:0.7; stroke-linecap:round; stroke-linejoin:round;
+  opacity:.09;
+  transform:rotate(-8deg);
+  transition:opacity .4s ease, transform .6s cubic-bezier(.2,.7,.2,1);
+}
+.realm:hover .realm-mark{ opacity:.17; transform:rotate(0deg) scale(1.06); }
+
+.realm-num{
+  position:absolute; top:1.3em; right:1.6em;
+  font-family:"Cinzel Decorative","Cinzel Decorative Repli", serif;
+  font-size:0.95em; color:var(--parchment-faint); letter-spacing:0.1em;
+}
+.realm-icon{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:3.1em; height:3.1em; border-radius:50%;
+  border:1px solid color-mix(in srgb, var(--realm) 50%, transparent);
+  background:radial-gradient(circle at 35% 30%, var(--realm-deep), transparent 75%);
+  box-shadow:0 0 18px -4px var(--realm-deep);
+  margin-bottom:1.1em;
+  transition:box-shadow .3s ease, transform .3s ease;
+}
+.realm-icon svg{
+  width:1.55em; height:1.55em;
+  fill:none; stroke:var(--realm); stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round;
+}
+.realm:hover .realm-icon{ box-shadow:0 0 26px -2px var(--realm-deep), 0 0 0 4px rgba(255,255,255,0.03); transform:scale(1.05); }
+
+.realm-name{
+  font-size:1.5em; line-height:1.2; margin-bottom:0.35em;
+  color:var(--parchment);
+}
+.realm-tag{
+  font-style:italic; color:var(--parchment-dim);
+  font-size:0.98em; line-height:1.55; max-width:40ch;
+  margin-bottom:1.4em;
+}
+
+/* Répartition des niveaux d'hostilité */
+.realm-bar{
+  display:flex; gap:3px; height:5px; margin-top:auto; margin-bottom:0.9em;
+}
+.realm-bar span{
+  flex:var(--n) 1 0; background:var(--host); border-radius:1px;
+  box-shadow:0 0 8px -1px var(--host);
+  opacity:.85;
+}
+.realm-foot{
+  display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:0.3em 1em;
+  font-size:0.85em; color:var(--parchment-faint);
+}
+.realm-count b{
+  font-family:"Cinzel","Cinzel Repli", serif; font-weight:700;
+  font-size:1.5em; color:var(--realm); margin-right:0.15em;
+}
+.realm-top b{ color:var(--parchment-dim); font-weight:500; }
+
+.realm-go{
+  margin-top:1.1em; padding-top:0.9em;
+  border-top:1px solid var(--line);
+  font-family:"Cinzel","Cinzel Repli", serif; font-size:0.78em; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--parchment-dim);
+  transition:color .25s ease, letter-spacing .25s ease;
+}
+.realm-go span{ display:inline-block; transition:transform .25s ease; }
+.realm:hover .realm-go{ color:var(--realm); letter-spacing:0.2em; }
+.realm:hover .realm-go span{ transform:translateX(5px); }
+
+/* Encadré « Lire une fiche » */
+.beast-guide{
+  margin-top:2.6em; padding:1.5em 1.8em;
+  border:1px solid var(--line);
+  border-left:2px solid var(--blood-dim);
+  background:linear-gradient(90deg, rgba(194,47,56,0.05), transparent 60%);
+}
+.beast-guide-title{
+  font-size:0.8em; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--parchment-faint); margin-bottom:0.2em;
+}
+.beast-guide .host-legend{ margin-top:0.8em; }
+.beast-guide .host-legend span{ display:inline-flex; align-items:center; gap:0.55em; }
+.beast-guide .host-legend span::before{
+  content:""; width:0.6em; height:0.6em; border-radius:50%;
+  background:var(--host); box-shadow:0 0 8px var(--host);
+}
+.beast-guide .beast-note{ margin-top:1em; margin-bottom:0; }
+
+@media (max-width:760px){
+  .realms{ grid-template-columns:1fr; }
+  .realm{ min-height:0; padding:1.6em 1.5em 1.4em; }
+  .realm-name{ font-size:1.3em; }
+  .beast-guide{ padding:1.2em 1.2em; }
+}
+@media (prefers-reduced-motion: reduce){
+  .realm, .realm-mark, .realm-icon, .realm-go, .realm-go span{ animation:none; opacity:1; transition:none; }
+  .realm-mark{ opacity:.09; }
+}
